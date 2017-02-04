@@ -1,0 +1,218 @@
+@font-face {
+    font-family: Prociono;
+    src: url(Prociono.woff);
+}
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+body {
+    font-family: Prociono;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 100%;
+    background: #f2f2f2;
+}
+
+a {
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
+#sidebar {
+    font-family: Prociono, serif;
+}
+
+#sidebar-head {
+    background-color: #202020;
+    color: white;
+    
+    background-image: url(/assets/pile_white.svg);
+    background-repeat: no-repeat;
+    background-position: center 1.5em;
+    background-size: 50%;
+    
+    text-align: center;
+}
+ 
+#sidebar-head > h1 {
+    padding: 0.5em;
+    padding-top: 6em;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+#sidebar-taglist {
+    background: #202020;
+    color: #f2f2f2;
+    padding: 1rem 0 1rem 0;
+}
+
+#sidebar-taglist > ul > li {
+    list-style: none;
+    font-size: 14pt;
+    margin-bottom: .5em;
+}
+
+#sidebar-taglist > ul > li:before {
+    content: "/ ";
+}
+
+#sidebar-taglist-top:before {
+    content: "\\ " !important;
+}
+
+#sidebar-taglist a {
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
+#content {
+    font-size: 14pt;
+}
+
+.text {
+    background: #202020;
+    color: #f2f2f2;
+    padding: 1rem;
+    margin: 0 0 1rem 0;
+}
+
+.doc-item-text {
+    display: inline-block;
+    margin-right: 3em;
+}
+
+.doc-item h2 {
+    font-size: 14pt;
+    font-weight: normal;
+    margin: 0;
+}
+
+.doc-item h3 {
+    margin: 0;
+    font-size: 11pt;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.doc-item-link {
+    display: inline-block;
+    font-size: 18pt;
+    font-weight: bold;
+    float: right;
+    position: relative;
+    top: 7px;
+    right: 1em;
+}
+
+.tag-text
+
+.document h1 {
+    margin: 0;
+    font-size: 24pt;
+}
+
+.document h2 {
+    margin: 2pt 0 2pt 0;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 16pt;
+}
+
+.document h3 {
+    margin: 2pt 0 2pt 0;
+    font-weight: normal;
+    font-size: 16pt;
+}
+
+.doc-taglist li {
+    list-style: none;
+    display: inline-block;
+}
+
+.doc-taglist li a {
+    text-decoration: underline;
+}
+
+.doc-taglist li:after {
+    content: "/";
+}
+
+.doc-taglist li:last-of-type:after {
+    content: "";
+}
+
+.doc-description-intro, .doc-link-intro {
+    font-weight: bold;
+}
+
+.doc-link-intro:before {
+    content: "➜ ";
+}
+
+.doc-link a {
+    text-decoration: underline;
+}
+
+@media screen and (min-width: 64em ) {
+    #sidebar {
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        width: 14rem;
+    }
+    
+    #content {
+        margin: 2rem 2rem 0 18rem;
+        padding: 0 0 2rem 0;
+    } 
+}
+
+@media screen and (max-width: 64em ) { 
+    #sidebar-head {
+        background-position: 14%;
+        background-size: 4rem;
+        height: 7rem;
+        margin-bottom: 1rem;
+    }
+    
+    #sidebar-head > h1 {
+        padding-top: 1.5rem;
+        font-size: 3rem;
+    }
+    
+    #sidebar-taglist {
+        margin-bottom: 1rem;
+    }
+}
+
+#login {
+    position: absolute;
+    bottom: 0;
+    right: 2rem;
+}
+
+#login input {
+    height: 14pt;
+    border: 1px solid lightgray;
+}
+
+#login button {
+    height: 14pt;
+    font-size: 8pt;
+    border: 1px solid lightgray;
+    background: white;
+}
+
+.czech {
+    font-size: 12pt;
+}
+
+.sign {
+    font-weight: bold;
+    font-size: 16pt;
+    margin: 0;
+}
