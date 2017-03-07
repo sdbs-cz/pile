@@ -36,7 +36,7 @@ if (isset($_SESSION['ID'])){
                 if (isset($_POST["Title"])){
                     if ( !empty($_FILES['upfile']['name']) ){
                         try {
-                            $url = "http://pile.sdbs.cz/files/" . rawurlencode($uploader->handle($_FILES, "files/"));
+                            $url = "http://pile.sdbs.cz/docs/" . rawurlencode($uploader->handle($_FILES, "docs/"));
                         } catch (RuntimeException $ex){
                             $page->text = $ex->getMessage();
                             echo $page->render('full_text.php');

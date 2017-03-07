@@ -1,3 +1,5 @@
 pile.db
 vendor
-files
+docs
+*.woff
+error_log
