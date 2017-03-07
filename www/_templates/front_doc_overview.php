@@ -1,11 +1,13 @@
 <div class="text document">
     <h1><?= $doc["Title"] ?></h1>
     <h2><?= $doc["Author"] ?></h2>
+    <?php if (!empty($doc["Published"])): ?>
     <h3>Published: <?= $doc["Published"] ?></h3>
+    <?php endif; ?>
     <h3 class="doc-taglist">Tags:
         <?
-        foreach($tags as $tag){
-            echo '<li><a href="?tag=' . $tag["ID"] . "\">" . $tag["Name"] . "</a></li>";
+        foreach($doc["tags"] as $tag){
+            echo '<li><a href="?tag=' . $tag["Name"] . "\">" . $tag["Name"] . "</a></li>";
         }
         ?>
     </h3>

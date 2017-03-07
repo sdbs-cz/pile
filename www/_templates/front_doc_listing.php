@@ -1,7 +1,9 @@
+<?php if (isset($tag)): ?>
 <div class="text tag-text">
     <h1><?= $tag["Name"] ?></h1>
     <p class="tag-desc"><?= $tag["Description"] ?></p>
 </div>
+<?php endif; ?>
 
 <?php foreach($docs as $doc): ?>
     <div class="text doc-item">

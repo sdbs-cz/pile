@@ -33,10 +33,10 @@
             </div>
             <div id="sidebar-taglist">
                 <ul>
-                    <li id="sidebar-taglist-top"><a href="?tag=*">ALL (<?= $tag_count ?>)</a></li>
+                    <li id="sidebar-taglist-top"><a href="?tag=*">ALL (<?= $doc_count ?>)</a></li>
                     <?
                         foreach($tags as $tag){
-                            echo '<li><a href="?tag=' . $tag['href'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
+                            echo '<li><a href="?tag=' . $tag['name'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
                         }
                     ?>
                 </ul>
@@ -48,11 +48,17 @@
         </div>
 
         <div id="login">
-            <form method="post">
+            <?php if ($logged): ?>
+            <form method="get" action="admin.php">
+                <button type="submit" id="login-button">></button>
+            </form>
+            <? else: ?>
+            <form method="post" action="admin.php">
                 <input type="text" name="username" id="login-user"></input>
-            <input type="password" name="password" id="login-pass"></input>
-        <button type="submit" id="login-button">></button>
-        </form>
-    </div>
+                <input type="password" name="password" id="login-pass"></input>
+                <button type="submit" id="login-button">></button>
+            </form>
+            <? endif; ?>
+        </div>
 </body>
 </html>
