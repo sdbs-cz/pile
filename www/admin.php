@@ -110,15 +110,7 @@ if (isset($_SESSION['ID'])){
     }
 
     $all_count = $db->getDocCount();
-
-    $ret_count = $db->query("SELECT
-                            count(ID)
-                        FROM
-                            Documents d
-                        LEFT OUTER JOIN 
-                            DocumentstoTags dt ON dt.Document = d.ID
-                        WHERE dt.Document IS NULL")->fetchArray(SQLITE3_NUM);
-    $none_count = $ret_count[0];
+    $none_count = $db->getUntaggedDocCount();
 
     $tags = $db->getTags();
 

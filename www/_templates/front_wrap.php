@@ -34,6 +34,9 @@
             <div id="sidebar-taglist">
                 <ul>
                     <li id="sidebar-taglist-top"><a href="?tag=*">ALL (<?= $doc_count ?>)</a></li>
+                    <? if ($none_count > 0): ?>
+                    <li id="sidebar-taglist-top"><a href="?tag=_">UNTAGGED (<?= $none_count ?>)</a></li>
+                    <? endif; ?>
                     <?
                         foreach($tags as $tag){
                             echo '<li><a href="?tag=' . $tag['name'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";

@@ -18,7 +18,9 @@
             <div id="sidebar-taglist">
                 <ul id="sidebar-taglist-overview">
                     <li id="sidebar-taglist-top"><a href="?tag=*">ALL (<?= $all_count ?>)</a></li>
+                    <? if ($none_count > 0): ?>
                     <li id="sidebar-taglist-top"><a href="?tag=_">UNTAGGED (<?= $none_count ?>)</a></li>
+                    <? endif; ?>
                     <li id="sidebar-taglist-top"><a href="?action=new_tag">ADD TAG</a></li>
                 </ul>
                 <ul>

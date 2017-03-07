@@ -29,6 +29,7 @@ if (isset($_GET["item"])) {
 
 $page = new Template();
 $page->doc_count = $db->getDocCount();
+$page->none_count = $db->getUntaggedDocCount();
 $page->tags = $db->getTags();
 $page->content = $content;
 $page->logged = isset($_SESSION["ID"]);

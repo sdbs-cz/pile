@@ -18,6 +18,17 @@ class PileDB {
         $ret_count = $this->db->query("SELECT count(ID) FROM Documents")->fetchArray(SQLITE3_NUM);
         return $ret_count[0];
     }
+    
+    public function getUntaggedDocCount(){
+        $ret_count = $this->db->query("SELECT
+                            count(ID)
+                        FROM
+                            Documents d
+                        LEFT OUTER JOIN 
+                            DocumentstoTags dt ON dt.Document = d.ID
+                        WHERE dt.Document IS NULL")->fetchArray(SQLITE3_NUM);
+        return $ret_count[0];
+    }
 
     public function getTags(){
         $tag_query = "SELECT 
