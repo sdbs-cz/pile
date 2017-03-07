@@ -15,8 +15,10 @@ if (isset($_GET["item"])) {
     $doc_list_template = new Template();
     if ($_GET["tag"] == "*"){
         $docs = $db->listDocs();
+    } elseif ($_GET["tag"] == "_") {
+        $docs = $db->listDocs(-1);
     } else {
-	$tag = $db->findTag($_GET["tag"]);
+        $tag = $db->findTag($_GET["tag"]);
         $docs = $db->listDocs($tag["ID"]);
         $doc_list_template->tag = $db->fetchTag($tag["ID"]);
     }
