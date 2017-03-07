@@ -147,7 +147,7 @@ class PileDB {
     }
 
     public function findTag($name){ 
-        $stmt = $this->db->prepare("SELECT * FROM Tags WHERE Name == :name");
+        $stmt = $this->db->prepare("SELECT * FROM Tags WHERE Name == :name COLLATE NOCASE");
         $stmt->bindValue(":name", $name, SQLITE3_TEXT);
         return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
     }
