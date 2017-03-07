@@ -158,12 +158,12 @@ class PileDB {
         return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
     }
 
-    public function updateTag($id, $name, $description, $parent){
+    public function updateTag($id, $name, $description){
         if (empty($id)){
             $stmt = $this->db->prepare("INSERT INTO Tags
-			(ID, Name, Description, Parent)
+			(ID, Name, Description)
 			VALUES
-                   	(NULL, :name, :description, :parent");
+                   	(NULL, :name, :description)");
         } else {
             $stmt = $this->db->prepare("UPDATE Tags SET
 						Name=:name,
@@ -174,7 +174,6 @@ class PileDB {
         }
         $stmt->bindValue(":name", $name, SQLITE3_TEXT);
         $stmt->bindValue(":description", $description, SQLITE3_TEXT);
-        $stmt->bindValue(":parent", $parent, SQLITE3_INTEGER);
         return $stmt->execute();
     }
 

@@ -14,10 +14,20 @@ if (isset($_SESSION['ID'])){
     if (isset($_GET["action"])){
         switch ($_GET["action"]){
             case "new_tag":
-                $content = $page->render("admin_doc_edit.php");
+                $content = $page->render("admin_tag_edit.php");
                 break;
             case "edit_tag":
-                $content = $page->render("admin_doc_edit.php");
+                if (isset($_POST["Name"])){
+                    $db->updateTag(
+                        $_GET["tag"],
+                        $_POST["Name"],
+                        $_POST["Description"]
+                    );
+                }
+                if ( !empty($_GET["tag"]) ) {
+                    $page->tag = $db->fetchTag($_GET["tag"]);
+                }
+                $content = $page->render("admin_tag_edit.php");
                 break;
             case "new_item":
                 $content = $page->render("admin_doc_edit.php");
@@ -46,19 +56,21 @@ if (isset($_SESSION['ID'])){
                     }
 
                     $db->updateDoc(
-                        $_POST["ID"],
+                        $_GET["item"],
                         $_POST["Title"],
                         $_POST["Author"],
                         $_POST["Description"],
                         $_POST["Published"],
                         $url,
                         $doc_tags
-                    ); 
+                    );
                 }
+
                 if ( !empty($_GET["item"]) ) {
                     $page->doc = $db->fetchDoc($_GET["item"]);
-                    $content = $page->render("admin_doc_edit.php");
                 }
+                $content = $page->render("admin_doc_edit.php");
+
                 break;
             case "remove":
                 if ( ! empty($_GET["confirm"]) && $_GET["confirm"] == "yes"){

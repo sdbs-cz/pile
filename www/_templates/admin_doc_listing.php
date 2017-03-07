@@ -2,7 +2,7 @@
 <div class="text tag-text">
     <h1><?= $tag["Name"] ?></h1>
     <p class="tag-desc"><?= $tag["Description"] ?></p>
-    <a class="tag-edit-link" href="?action=edit&tag=<?= $tag["ID"] ?>">[edit tag]</a>
+    <a class="tag-edit-link" href="?action=edit_tag&tag=<?= $tag["ID"] ?>">[edit tag]</a>
 </div>
 <? endif; ?>
 

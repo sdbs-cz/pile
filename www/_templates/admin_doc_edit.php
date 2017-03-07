@@ -20,7 +20,6 @@
 	    	echo $_GET["tag"];
 	    }
         ?>"><br>
-        <input type="hidden" name="ID" value="<?= empty($doc) ? "" : $doc["ID"] ?>" >
         <input type="submit"> 
     </form>
 </div>
