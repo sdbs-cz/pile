@@ -12,5 +12,5 @@
         ?>
     </h3>
     <p class="doc-description"><span class="doc-description-intro">Description: </span><?= $doc["Description"] ?></p>
-    <div class="doc-link"><span class="doc-link-intro">Access file at: </span><a href="<?= $doc["URL"] ?>"><?= $doc["URL"] ?></a></div>
+    <div class="doc-link"><span class="doc-link-intro">Access file at: </span><a href="<?= $doc["URL"] ?>"><?= urldecode($doc["URL"]) ?></a></div>
 </div>
