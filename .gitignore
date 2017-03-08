@@ -1,5 +1,8 @@
 pile.db
-vendor
 docs
+
+vendor
+_lib
 *.woff
+
 error_log
