@@ -33,9 +33,16 @@ if (isset($_SESSION['ID'])){
                 $content = $page->render("admin_doc_edit.php");
                 break;
             case "edit_item":
-                if (isset($_POST["Title"])){
+                if (isset($_POST["Title"]) || !empty($_FILES['upfile']['name']) ){
+                    $title = $_POST["Title"];
+                    
                     if ( !empty($_FILES['upfile']['name']) ){
                         try {
+                            if ( empty($title) ){
+                                $title = pathinfo($_FILES['upfile']['name'], PATHINFO_FILENAME);
+                                $title = str_replace("_", " ", $title);
+                                $title = trim($title);
+                            }
                             $url = "http://pile.sdbs.cz/docs/" . rawurlencode($uploader->handle($_FILES, "docs/"));
                         } catch (RuntimeException $ex){
                             $page->text = $ex->getMessage();
@@ -57,7 +64,7 @@ if (isset($_SESSION['ID'])){
 
                     $db->updateDoc(
                         $_GET["item"],
-                        $_POST["Title"],
+                        $title,
                         $_POST["Author"],
                         $_POST["Description"],
                         $_POST["Published"],
