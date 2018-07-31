@@ -53,7 +53,7 @@
         <div id="login">
             <?php if ($logged): ?>
             <form method="get" action="admin.php">
-                <button type="submit" id="login-button">></button>
+                <button type="submit" id="login-button">enter admin interface</button>
             </form>
             <? else: ?>
             <form method="post" action="admin.php">
