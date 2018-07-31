@@ -7,7 +7,9 @@
 
 <?php foreach($docs as $doc): ?>
     <div class="text doc-item">
-        <a class="doc-item-link" href="<?= $doc["URL"] ?>">🔗</a>
+        <?php if (!empty($doc["URL"])): ?>
+            <a class="doc-item-link" href="<?= $doc["URL"] ?>">🔗</a>
+        <?php endif; ?>
         <a href="?item=<?= $doc["ID"]?>">
             <div class="doc-item-text">
                 <h2><?= $doc["Title"]?></h2>
