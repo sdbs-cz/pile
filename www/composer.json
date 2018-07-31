@@ -1,0 +1,8 @@
+{
+    "config": {
+        "vendor-dir": "_vendor"
+    },
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
+}

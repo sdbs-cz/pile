@@ -1,7 +1,7 @@
 <?php
 require '_templates/Template.php';
 require '_util/PileDB.php';
-require '_lib/Parsedown.php';
+require '_vendor/erusev/parsedown/Parsedown.php';
 
 $db = new PileDB();
 $pd = new Parsedown();
