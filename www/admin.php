@@ -8,23 +8,23 @@ $db = new PileDB();
 $uploader = new Uploader();
 session_start();
 
-if (isset($_SESSION['ID'])){
+if (isset($_SESSION['ID'])) {
     $page = new Template();
 
-    if (isset($_GET["action"])){
-        switch ($_GET["action"]){
+    if (isset($_GET["action"])) {
+        switch ($_GET["action"]) {
             case "new_tag":
                 $content = $page->render("admin_tag_edit.php");
                 break;
             case "edit_tag":
-                if (isset($_POST["Name"])){
+                if (isset($_POST["Name"])) {
                     $db->updateTag(
                         $_GET["tag"],
                         $_POST["Name"],
                         $_POST["Description"]
                     );
                 }
-                if ( !empty($_GET["tag"]) ) {
+                if (!empty($_GET["tag"])) {
                     $page->tag = $db->fetchTag($_GET["tag"]);
                 }
                 $content = $page->render("admin_tag_edit.php");
@@ -33,18 +33,18 @@ if (isset($_SESSION['ID'])){
                 $content = $page->render("admin_doc_edit.php");
                 break;
             case "edit_item":
-                if (isset($_POST["Title"]) || !empty($_FILES['upfile']['name']) ){
+                if (isset($_POST["Title"]) || !empty($_FILES['upfile']['name'])) {
                     $title = $_POST["Title"];
-                    
-                    if ( !empty($_FILES['upfile']['name']) ){
+
+                    if (!empty($_FILES['upfile']['name'])) {
                         try {
-                            if ( empty($title) ){
+                            if (empty($title)) {
                                 $title = pathinfo($_FILES['upfile']['name'], PATHINFO_FILENAME);
                                 $title = str_replace("_", " ", $title);
                                 $title = trim($title);
                             }
                             $url = "http://pile.sdbs.cz/docs/" . rawurlencode($uploader->handle($_FILES, "docs/"));
-                        } catch (RuntimeException $ex){
+                        } catch (RuntimeException $ex) {
                             $page->text = $ex->getMessage();
                             echo $page->render('full_text.php');
                             return;
@@ -54,10 +54,10 @@ if (isset($_SESSION['ID'])){
                     }
 
                     $doc_tags = [];
-                    foreach (explode(",", $_POST["Tags"]) as $tagName){
+                    foreach (explode(",", $_POST["Tags"]) as $tagName) {
                         $tagName = trim($tagName);
                         $tag = $db->findTag($tagName);
-                        if (!in_array($tag["ID"], $doc_tags)){
+                        if (!in_array($tag["ID"], $doc_tags)) {
                             array_push($doc_tags, $tag["ID"]);
                         }
                     }
@@ -73,14 +73,14 @@ if (isset($_SESSION['ID'])){
                     );
                 }
 
-                if ( !empty($_GET["item"]) ) {
+                if (!empty($_GET["item"])) {
                     $page->doc = $db->fetchDoc($_GET["item"]);
                 }
                 $content = $page->render("admin_doc_edit.php");
 
                 break;
             case "remove":
-                if ( ! empty($_GET["confirm"]) && $_GET["confirm"] == "yes"){
+                if (!empty($_GET["confirm"]) && $_GET["confirm"] == "yes") {
                     $db->removeDoc($_GET["item"]);
                     $page->text = "Document deleted.";
                     $page->redirect = $_GET["ret"];
@@ -100,7 +100,7 @@ if (isset($_SESSION['ID'])){
         }
     } elseif (isset($_GET["tag"])) {
         $doc_list_template = new Template();
-        if ($_GET["tag"] == "*"){
+        if ($_GET["tag"] == "*") {
             $docs = $db->listDocs();
         } elseif ($_GET["tag"] == "_") {
             $docs = $db->listDocs(-1);
@@ -129,19 +129,19 @@ if (isset($_SESSION['ID'])){
 } else {
     $page = new Template();
 
-    if (isset($_POST['username']) && isset($_POST['password'])){
+    if (isset($_POST['username']) && isset($_POST['password'])) {
         $ret_id = $db->authenticate($_POST["username"], $_POST["password"]);
-        if ($ret_id > 0){
+        if ($ret_id > 0) {
             $_SESSION['ID'] = $ret_id;
             $page->text = "You have logged in successfully.";
-            $page->redirect = "admin.php"; 
+            $page->redirect = "admin.php";
         } else {
             $page->text = "Username and/or password incorrect.";
-            $page->redirect = "/"; 
+            $page->redirect = "/";
         }
     } else {
         $page->text = "Please log in before accessing this page.";
-        $page->redirect = "/"; 
+        $page->redirect = "/";
     }
 
     echo $page->render('full_text.php');

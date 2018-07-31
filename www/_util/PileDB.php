@@ -1,25 +1,32 @@
 <?php
-class PileDB {
+
+class PileDB
+{
     private $db;
 
-    function __construct() {
+    function __construct()
+    {
         $this->db = new SQLite3("pile.db");
     }
 
-    function prepare($statement){
+    function prepare($statement)
+    {
         return $this->db->prepare($statement);
     }
 
-    function query($statement){
+    function query($statement)
+    {
         return $this->db->query($statement);
     }
 
-    public function getDocCount(){
+    public function getDocCount()
+    {
         $ret_count = $this->db->query("SELECT count(ID) FROM Documents")->fetchArray(SQLITE3_NUM);
         return $ret_count[0];
     }
-    
-    public function getUntaggedDocCount(){
+
+    public function getUntaggedDocCount()
+    {
         $ret_count = $this->db->query("SELECT
                             count(ID)
                         FROM
@@ -30,7 +37,8 @@ class PileDB {
         return $ret_count[0];
     }
 
-    public function getTags(){
+    public function getTags()
+    {
         $tag_query = "SELECT 
                    ID, Name, count(Document)
                 FROM
@@ -51,7 +59,8 @@ class PileDB {
         return $tags;
     }
 
-    public function fetchDoc($id){
+    public function fetchDoc($id)
+    {
         $stmt_doc = $this->db->prepare("SELECT * FROM Documents WHERE ID = :id");
         $stmt_doc->bindValue(":id", $id, SQLITE3_INTEGER);
         $doc = $stmt_doc->execute()->fetchArray(SQLITE3_ASSOC);
@@ -69,10 +78,11 @@ class PileDB {
         return $doc;
     }
 
-    public function listDocs(){
-        if (func_num_args() > 0){
+    public function listDocs()
+    {
+        if (func_num_args() > 0) {
             $tag = func_get_arg(0);
-            if ($tag > 0 ) {
+            if ($tag > 0) {
                 $stmt = $this->db->prepare("SELECT
                                         ID, Title, Author, Published, URL
                                     FROM
@@ -103,8 +113,9 @@ class PileDB {
         return $docs;
     }
 
-    public function updateDoc($id, $title, $author, $description, $published, $url, $tag_ids){
-        if ( empty($id) ){
+    public function updateDoc($id, $title, $author, $description, $published, $url, $tag_ids)
+    {
+        if (empty($id)) {
             $stmt = $this->db->prepare("INSERT INTO Documents
 			(ID, Title, Author, Description, Published, URL)
 			VALUES
@@ -125,18 +136,18 @@ class PileDB {
         $stmt->bindValue(":published", $published, SQLITE3_TEXT);
         $stmt->bindValue(":url", $url, SQLITE3_TEXT);
         $stmt->execute();
-        if ( empty($id) ){
+        if (empty($id)) {
             $id = $this->db->lastInsertRowid();
         }
 
-        if ( ! empty($id) ){
+        if (!empty($id)) {
             $delete_stmt = $this->db->prepare("DELETE FROM DocumentsToTags
                                             WHERE Document = :id");
             $delete_stmt->bindValue(":id", $id, SQLITE3_INTEGER);
             $delete_stmt->execute();
         }
 
-        foreach ($tag_ids as $tag){
+        foreach ($tag_ids as $tag) {
             $tag_stmt = $this->db->prepare("INSERT INTO DocumentsToTags ('Document', 'Tag')
                                                 VALUES (:doc, :tag)");
             $tag_stmt->bindValue("doc", $id, SQLITE3_INTEGER);
@@ -145,32 +156,36 @@ class PileDB {
         }
     }
 
-    public function removeDoc($id){
+    public function removeDoc($id)
+    {
         $doc_stmt = $this->db->prepare("DELETE FROM Documents
                                             WHERE ID = :id");
         $doc_stmt->bindValue("id", $id, SQLITE3_INTEGER);
         $doc_stmt->execute();
-        
+
         $tag_stmt = $this->db->prepare("DELETE FROM DocumentsToTags
                                             WHERE Document = :id");
         $tag_stmt->bindValue("id", $id, SQLITE3_INTEGER);
         $tag_stmt->execute();
     }
 
-    public function findTag($name){ 
+    public function findTag($name)
+    {
         $stmt = $this->db->prepare("SELECT * FROM Tags WHERE Name == :name COLLATE NOCASE");
         $stmt->bindValue(":name", $name, SQLITE3_TEXT);
         return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
     }
 
-    public function fetchTag($tag){ 
+    public function fetchTag($tag)
+    {
         $stmt = $this->db->prepare("SELECT * FROM Tags WHERE ID == :tag");
         $stmt->bindValue(":tag", $tag, SQLITE3_INTEGER);
         return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
     }
 
-    public function updateTag($id, $name, $description){
-        if (empty($id)){
+    public function updateTag($id, $name, $description)
+    {
+        if (empty($id)) {
             $stmt = $this->db->prepare("INSERT INTO Tags
 			(ID, Name, Description)
 			VALUES
@@ -188,7 +203,8 @@ class PileDB {
         return $stmt->execute();
     }
 
-    public function authenticate($username, $password){
+    public function authenticate($username, $password)
+    {
         $stmt = $this->db->prepare("SELECT
                                     *
                                 FROM
@@ -199,11 +215,12 @@ class PileDB {
         $auth_ret = $stmt->execute();
         $auth = $auth_ret->fetchArray(SQLITE3_ASSOC);
 
-        if (password_verify($password, $auth["Password"])){
+        if (password_verify($password, $auth["Password"])) {
             return $auth["ID"];
         } else {
             return -1;
         }
     }
 }
+
 ?>

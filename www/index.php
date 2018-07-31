@@ -16,7 +16,7 @@ if (isset($_GET["item"])) {
     $content = $doc_template->render('front_doc_overview.php');
 } elseif (isset($_GET["tag"])) {
     $doc_list_template = new Template();
-    if ($_GET["tag"] == "*"){
+    if ($_GET["tag"] == "*") {
         $docs = $db->listDocs();
     } elseif ($_GET["tag"] == "_") {
         $docs = $db->listDocs(-1);

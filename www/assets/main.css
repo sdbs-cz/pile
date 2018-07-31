@@ -4,7 +4,9 @@
 }
 
 *, *:before, *:after {
-  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
@@ -28,15 +30,15 @@ a {
 #sidebar-head {
     background-color: #202020;
     color: white;
-    
+
     background-image: url(/assets/pile_white.svg);
     background-repeat: no-repeat;
     background-position: center 1.5em;
     background-size: 50%;
-    
+
     text-align: center;
 }
- 
+
 #sidebar-head > h1 {
     padding: 0.5em;
     padding-top: 6em;
@@ -109,7 +111,6 @@ a {
 }
 
 .tag-text
-
 .document h1 {
     margin: 0;
     font-size: 24pt;
@@ -164,26 +165,26 @@ a {
         left: 2rem;
         width: 14rem;
     }
-    
+
     #content {
         margin: 2rem 2rem 0 18rem;
         padding: 0 0 2rem 0;
-    } 
+    }
 }
 
-@media screen and (max-width: 64em ) { 
+@media screen and (max-width: 64em ) {
     #sidebar-head {
         background-position: 14%;
         background-size: 4rem;
         height: 7rem;
         margin-bottom: 1rem;
     }
-    
+
     #sidebar-head > h1 {
         padding-top: 1.5rem;
         font-size: 3rem;
     }
-    
+
     #sidebar-taglist {
         margin-bottom: 1rem;
     }

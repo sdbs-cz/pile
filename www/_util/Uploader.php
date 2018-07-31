@@ -1,7 +1,10 @@
 <?
-class Uploader {
-    public function handle($files, $dir){
-        if ( is_array($files['upfile']['error']) ) {
+
+class Uploader
+{
+    public function handle($files, $dir)
+    {
+        if (is_array($files['upfile']['error'])) {
             throw new RuntimeException('Invalid parameters.');
         }
 
@@ -20,20 +23,20 @@ class Uploader {
 
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search(
-            $finfo->file($files['upfile']['tmp_name']),
-            array(
-            'pdf' => 'application/pdf',
-            'zip' => 'application/zip',
-            'rar' => 'application/rar'
-        ),
-            true
-        )) {
+                $finfo->file($files['upfile']['tmp_name']),
+                array(
+                    'pdf' => 'application/pdf',
+                    'zip' => 'application/zip',
+                    'rar' => 'application/rar'
+                ),
+                true
+            )) {
             throw new RuntimeException('Invalid file format.');
         }
 
         $name = basename($files['upfile']['name']);
-        $name = preg_replace('/[^\x20-\x7E]/','', $name);
-        if ($name != ".htaccess"){
+        $name = preg_replace('/[^\x20-\x7E]/', '', $name);
+        if ($name != ".htaccess") {
             if (!move_uploaded_file(
                 $files['upfile']['tmp_name'],
                 $dir . $name)) {
@@ -46,4 +49,5 @@ class Uploader {
         return $name;
     }
 }
+
 ?>

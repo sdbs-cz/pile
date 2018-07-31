@@ -4,11 +4,13 @@
 }
 
 *, *:before, *:after {
-  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: Prociono;
+    font-family: Prociono, serif;
     margin: 0;
     padding: 0;
     position: relative;
@@ -27,7 +29,7 @@ a {
 
 #sidebar-head {
     background-color: #f2f2f2;
-    color: 202020;
+    color: #202020;
     text-align: center;
 }
 
@@ -82,7 +84,7 @@ a {
     margin-right: 3em;
 }
 
-.doc-item h2 { 
+.doc-item h2 {
     font-size: 14pt;
     font-weight: normal;
     margin: 0;
@@ -164,7 +166,7 @@ a {
 }
 
 input[type="text"] {
-	width: 80%;
+    width: 80%;
 }
 
 @media screen and (min-width: 64em ) {
@@ -174,26 +176,26 @@ input[type="text"] {
         left: 2rem;
         width: 14rem;
     }
-    
+
     #content {
         margin: 2rem 2rem 0 18rem;
         padding: 0 0 2rem 0;
-    } 
+    }
 }
 
-@media screen and (max-width: 64em ) { 
+@media screen and (max-width: 64em ) {
     #sidebar-head {
         background-position: 14%;
         background-size: 4rem;
         height: 7rem;
         margin-bottom: 1rem;
     }
-    
+
     #sidebar-head > h1 {
         padding-top: 1.5rem;
         font-size: 3rem;
     }
-    
+
     #sidebar-taglist {
         margin-bottom: 1rem;
     }
@@ -214,7 +216,7 @@ input[type="text"] {
     height: 14pt;
     font-size: 8pt;
     border: 1px solid lightgray;
-    background: 202020;
+    background: #202020;
 }
 
 .czech {
@@ -227,7 +229,7 @@ input[type="text"] {
     margin: 0;
 }
 
-input[type="submit"], input[type="file"]{
+input[type="submit"], input[type="file"] {
     font-family: Prociono, serif;
 }
 
