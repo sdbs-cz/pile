@@ -20,7 +20,7 @@
     <?php endif; ?>
     
     <?php if (!empty($doc["Description"])): ?>
-    <p class="doc-description"><span class="doc-description-intro">Description: </span><?= $doc["Description"] ?></p>
+    <p class="doc-description"><span class="doc-description-intro"><?= empty($doc["URL"]) ? "Content" : "Description" ?>: </span><?= $doc["Description"] ?></p>
     <?php endif; ?>
 
     <?php if (!empty($doc["URL"])): ?>
