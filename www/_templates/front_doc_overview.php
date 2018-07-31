@@ -22,6 +22,8 @@
     <?php if (!empty($doc["Description"])): ?>
     <p class="doc-description"><span class="doc-description-intro">Description: </span><?= $doc["Description"] ?></p>
     <?php endif; ?>
-    
+
+    <?php if (!empty($doc["URL"])): ?>
     <div class="doc-link"><span class="doc-link-intro">Access file at: </span><a href="<?= $doc["URL"] ?>"><?= urldecode($doc["URL"]) ?></a></div>
+    <?php endif; ?>
 </div>

@@ -4,7 +4,7 @@ CREATE TABLE Documents (
 	Description TEXT,
 	Author TEXT,
 	Published TEXT,
-	URL TEXT NOT NULL
+	URL TEXT
 );
 
 CREATE TABLE DocumentsToTags (
