@@ -24,7 +24,9 @@
             <?php endif; ?>
             <?php
             foreach ($tags as $tag) {
-                echo '<li><a href="?tag=' . $tag['name'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
+                if ($tag['count'] > 0) {
+                    echo '<li><a href="?tag=' . $tag['name'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
+                }
             }
             ?>
         </ul>
