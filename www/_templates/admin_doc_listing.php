@@ -4,7 +4,7 @@
         <p class="tag-desc"><?= $tag["Description"] ?></p>
         <a class="tag-edit-link" href="?action=edit_tag&tag=<?= $tag["ID"] ?>">[edit tag]</a>
     </div>
-<? endif; ?>
+<?php endif; ?>
 
 <?php if ($_GET["tag"] != "*" &&
     $_GET["tag"] != "_"): ?>
@@ -15,7 +15,7 @@
             </div>
         </a>
     </div>
-<? endif; ?>
+<?php endif; ?>
 
 <?php foreach ($docs as $doc): ?>
     <div class="text doc-item">

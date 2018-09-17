@@ -11,7 +11,7 @@
 </textarea><br>
         <strong>File:</strong> <input type="file" name="upfile"><br>
         <strong>URL:</strong> <input type="text" name="URL" value="<?= empty($doc) ? "" : $doc["URL"] ?>"><br>
-        <strong>Tags:</strong> <input type="text" name="Tags" value="<?
+        <strong>Tags:</strong> <input type="text" name="Tags" value="<?php
         if (!empty($doc)) {
             $tags = [];
             foreach ($doc["tags"] as $tag) {

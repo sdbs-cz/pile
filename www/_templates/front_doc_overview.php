@@ -11,7 +11,7 @@
 
     <?php if (!empty($doc["tags"])): ?>
         <h3 class="doc-taglist">Tags:
-            <?
+            <?php
             foreach ($doc["tags"] as $tag) {
                 echo '<li><a href="?tag=' . $tag["Name"] . "\">" . $tag["Name"] . "</a></li>";
             }
