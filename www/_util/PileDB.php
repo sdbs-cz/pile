@@ -203,6 +203,13 @@ class PileDB
         return $stmt->execute();
     }
 
+    public function deleteTag($tag)
+    {
+        $stmt = $this->db->prepare("DELETE FROM Tags WHERE ID == :tag");
+        $stmt->bindValue(":tag", $tag, SQLITE3_INTEGER);
+        return $stmt->execute();
+    }
+
     public function authenticate($username, $password)
     {
         $stmt = $this->db->prepare("SELECT

@@ -29,6 +29,15 @@ if (isset($_SESSION['ID'])) {
                 }
                 $content = $page->render("admin_tag_edit.php");
                 break;
+            case "delete_tag":
+                if (!empty($_GET["tag"])) {
+                    $db->deleteTag($_GET["tag"]);
+                    $page->text = "Tag deleted successfully.";
+                    $page->redirect = "/admin.php";
+                    echo $page->render('full_text.php');
+                    return;
+                }
+                break;
             case "new_item":
                 $content = $page->render("admin_doc_edit.php");
                 break;
