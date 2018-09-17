@@ -52,10 +52,16 @@ a {
     padding: 1rem 0 1rem 0;
 }
 
+#sidebar-taglist > ul {
+    padding-left: 1rem;
+}
+
 #sidebar-taglist > ul > li {
     list-style: none;
     font-size: 14pt;
     margin-bottom: .5em;
+    padding-left: .7em;
+    text-indent:-.7em;
 }
 
 #sidebar-taglist > ul > li:before {
