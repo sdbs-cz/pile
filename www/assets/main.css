@@ -10,7 +10,7 @@
 }
 
 body {
-    font-family: Prociono;
+    font-family: Prociono, serif;
     margin: 0;
     padding: 0;
     position: relative;
@@ -61,7 +61,7 @@ a {
     font-size: 14pt;
     margin-bottom: .5em;
     padding-left: .7em;
-    text-indent:-.7em;
+    text-indent: -.7em;
 }
 
 #sidebar-taglist > ul > li:before {
@@ -116,7 +116,7 @@ a {
     right: 1em;
 }
 
-.tag-text
+.tag-text,
 .document h1 {
     margin: 0;
     font-size: 24pt;
