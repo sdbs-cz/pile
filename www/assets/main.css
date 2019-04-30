@@ -40,10 +40,8 @@ a {
 }
 
 #sidebar-head > h1 {
-    padding: 0.5em;
-    padding-top: 6em;
-    margin: 0;
-    margin-bottom: 1rem;
+    padding: 6em 0.5em 0.5em;
+    margin: 0 0 1rem;
 }
 
 #sidebar-taglist {
@@ -180,6 +178,8 @@ a {
 
 @media screen and (max-width: 64em ) {
     #sidebar-head {
+        display: flex;
+        align-items: center;
         background-position: 14%;
         background-size: 4rem;
         height: 7rem;
@@ -187,8 +187,11 @@ a {
     }
 
     #sidebar-head > h1 {
-        padding-top: 1.5rem;
-        font-size: 3rem;
+        padding: 0 1rem;
+        margin: 0;
+        font-size: 2.5rem;
+        text-align: right;
+        width: 100%;
     }
 
     #sidebar-taglist {
