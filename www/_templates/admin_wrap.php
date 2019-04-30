@@ -24,7 +24,7 @@
         <ul>
             <?php
             foreach ($tags as $tag) {
-                echo '<li><a href="?tag=' . $tag['name'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
+                echo '<li><a href="?tag=' . $tag['id'] . "\">" . $tag['name'] . " (" . $tag['count'] . ")</a></li>";
             }
             ?>
         </ul>

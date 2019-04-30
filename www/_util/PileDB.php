@@ -51,7 +51,7 @@ class PileDB
         $tags = [];
         while ($row = $tags_ret->fetchArray(SQLITE3_NUM)) {
             array_push($tags, array(
-                'href' => $row[0],
+                'id' => $row[0],
                 'name' => $row[1],
                 'count' => $row[2]
             ));

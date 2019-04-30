@@ -21,9 +21,8 @@ if (isset($_GET["item"])) {
     } elseif ($_GET["tag"] == "_") {
         $docs = $db->listDocs(-1);
     } else {
-        $tagObj = $db->findTag($_GET["tag"]);
-        $docs = $db->listDocs($tagObj["ID"]);
-        $tag = $db->fetchTag($tagObj["ID"]);
+        $tag = $db->fetchTag($_GET["tag"]);
+        $docs = $db->listDocs($tag["ID"]);
         $tag["Description"] = $pd->text($tag["Description"]);
         $doc_list_template->tag = $tag;
     }

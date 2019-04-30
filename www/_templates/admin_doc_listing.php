@@ -10,7 +10,7 @@
 <?php if ($_GET["tag"] != "*" &&
     $_GET["tag"] != "_"): ?>
     <div class="text doc-item doc-new-item">
-        <a href="?action=new_item&tag=<?= $tag["Name"] ?>">
+        <a href="?action=new_item&tag=<?= $tag["ID"] ?>">
             <div class="doc-item-text">
                 <h2>Upload a new document</h2>
             </div>

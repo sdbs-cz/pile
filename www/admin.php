@@ -114,9 +114,9 @@ if (isset($_SESSION['ID'])) {
         } elseif ($_GET["tag"] == "_") {
             $docs = $db->listDocs(-1);
         } else {
-            $tag = $db->findTag($_GET["tag"]);
+            $tag = $db->fetchTag($_GET["tag"]);
             $docs = $db->listDocs($tag["ID"]);
-            $doc_list_template->tag = $db->fetchTag($tag["ID"]);
+            $doc_list_template->tag = $tag;
         }
         $doc_list_template->docs = $docs;
         $content = $doc_list_template->render('admin_doc_listing.php');
