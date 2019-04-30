@@ -199,9 +199,9 @@ a {
 }
 
 #login {
-    position: fixed;
-    bottom: 1rem;
-    right: 1.5rem;
+    position: absolute;
+    bottom: 0;
+    right: 2rem;
 }
 
 #login input {
