@@ -39,6 +39,9 @@ if (isset($_SESSION['ID'])) {
                 }
                 break;
             case "new_item":
+                if (!empty($_GET["tag"])) {
+                    $page->tag = $db->fetchTag($_GET["tag"]);
+                }
                 $content = $page->render("admin_doc_edit.php");
                 break;
             case "edit_item":

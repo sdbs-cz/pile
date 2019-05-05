@@ -19,7 +19,7 @@
             }
             echo implode(", ", $tags);
         } else if (!empty($_GET["tag"])) {
-            echo $_GET["tag"];
+            echo $tag["Name"];
         }
         ?>"><br>
         <input type="submit">
