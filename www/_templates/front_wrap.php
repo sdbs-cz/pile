@@ -8,6 +8,7 @@
     <title>The /-\ pile</title>
 
     <link rel="stylesheet" type="text/css" href="assets/main.css">
+    <link rel="icon" type="image/png" href="/favicon.png">
 
 </head>
 <body>
