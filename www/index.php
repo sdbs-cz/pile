@@ -33,6 +33,7 @@ if (isset($_GET["item"])) {
     $content = $doc_list_template->render('front_doc_listing.php');
 } else {
     $intro_template = new Template();
+    $intro_template->recent_docs = $db->getRecentDocs();
     $content = $intro_template->render('front_intro.php');
 }
 

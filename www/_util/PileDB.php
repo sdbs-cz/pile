@@ -113,13 +113,27 @@ class PileDB
         return $docs;
     }
 
+    public function getRecentDocs($count = 15)
+    {
+        $query = $this->db->prepare("SELECT * FROM Documents ORDER BY ID DESC LIMIT :count");
+        $query->bindValue("count", $count);
+
+        $query_ret = $query->execute();
+        $result = [];
+        while ($row = $query_ret->fetchArray(SQLITE3_ASSOC)) {
+            array_push($result, $row);
+        }
+        return $result;
+    }
+
     public function updateDoc($id, $title, $author, $description, $published, $url, $tag_ids)
     {
         if (empty($id)) {
             $stmt = $this->db->prepare("INSERT INTO Documents
-			(ID, Title, Author, Description, Published, URL)
+			(ID, Title, Author, Description, Published, URL, UploadedTime)
 			VALUES
-                   	(NULL, :title, :author, :description, :published, :url)");
+                   	(NULL, :title, :author, :description, :published, :url, :uploadedtime)");
+            $stmt->bindValue(":uploadedtime", time(), SQLITE3_INTEGER);
         } else {
             $stmt = $this->db->prepare("UPDATE Documents SET
 						Title=:title,

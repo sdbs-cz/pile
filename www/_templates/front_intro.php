@@ -6,3 +6,23 @@
         dávat ty nejdůležitější nebo nejzajímavější věci, zatim se o tom ale nikde moc nešiřte.</p>
     <p class="intro sign">/-\</p>
 </div>
+
+<div class="text recent-additions">
+    <h2>Recent additions</h2>
+    <ul>
+        <?php foreach (array_slice($recent_docs, 0, 5) as $doc): ?>
+            <li>
+                <a href="/?item=<?= $doc['ID'] ?>">
+                    <?php if (!empty($doc['UploadedTime'])): ?>
+                        <em>(<?= date("Y/m/d H:i:s", $doc['UploadedTime']); ?>)</em>
+                    <?php endif; ?>
+                    <?= $doc['Title'] ?>
+
+                    <div class="recent-additions-desc">
+                        <?= $doc['Description'] ?>
+                    </div>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

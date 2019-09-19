@@ -23,6 +23,19 @@ a {
     text-decoration: none;
 }
 
+ul {
+    padding-left: 20px;
+}
+
+ul > li {
+    list-style: none;
+}
+
+ul > li:before {
+    content: "—";
+    padding-right: .5rem;
+}
+
 #sidebar {
     font-family: Prociono, serif;
 }
@@ -64,6 +77,7 @@ a {
 
 #sidebar-taglist > ul > li:before {
     content: "/ ";
+    padding-right: 0;
 }
 
 #sidebar-taglist-top:before {
@@ -173,6 +187,22 @@ a {
         margin: 2rem 2rem 0 18rem;
         padding: 0 0 2rem 0;
     }
+}
+
+
+.recent-additions li {
+    margin-bottom: .5em;
+}
+
+.recent-additions-desc {
+    font-size: 12pt;
+    color: #bfbfbf;
+    padding-left: calc(20px + .5rem);
+
+    line-height: 13pt;
+    max-height: 26pt;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 64em ) {
