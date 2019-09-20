@@ -13,6 +13,7 @@ if (isset($_GET["item"])) {
 
     $doc_template = new Template();
     $doc_template->doc = $doc;
+    $selected_doc = $doc;
     $content = $doc_template->render('front_doc_overview.php');
 } elseif (isset($_GET["tag"])) {
     $doc_list_template = new Template();
@@ -27,6 +28,7 @@ if (isset($_GET["item"])) {
         }
         $docs = $db->listDocs($tag["ID"]);
         $tag["Description"] = $pd->text($tag["Description"]);
+        $selected_tag = $tag;
         $doc_list_template->tag = $tag;
     }
     $doc_list_template->docs = $docs;
@@ -43,5 +45,7 @@ $page->none_count = $db->getUntaggedDocCount();
 $page->tags = $db->getTags();
 $page->content = $content;
 $page->logged = isset($_SESSION["ID"]);
+$page->selected_doc = $selected_doc;
+$page->selected_tag = $selected_tag;
 echo $page->render('front_wrap.php');
 ?>

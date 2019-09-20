@@ -10,6 +10,25 @@
     <link rel="stylesheet" type="text/css" href="assets/main.css">
     <link rel="icon" type="image/png" href="/favicon.png">
 
+    <?php if ($selected_doc): ?>
+        <meta property="og:title" content="The /-\ Pile: <?= $selected_doc['Title'] ?>"/>
+        <meta property="og:url" content="https://pile.sdbs.cz/?item=<?= $selected_doc['ID'] ?>"/>
+        <meta property="og:description" content="<?= $selected_doc['Description'] ?>"/>
+        <meta property="og:type" content="article"/>
+    <?php elseif ($selected_tag): ?>
+        <meta property="og:title" content="The /-\ Pile: Documents under '<?= $selected_tag['Name'] ?>'"/>
+        <meta property="og:url" content="https://pile.sdbs.cz/?tag=<?= $selected_tag['ID'] ?>"/>
+        <meta property="og:description" content="<?= $selected_tag['Description'] ?>"/>
+        <meta property="og:type" content="website"/>
+    <?php else: ?>
+        <meta property="og:title" content="The /-\ Pile"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://pile.sdbs.cz/"/>
+        <meta property="og:description"
+              content="This is where we upload the stuff we consider important to the larger conceptual and thematic landscape of what we do: confronting apathy, inter-subjectivity, the human right to self-determination, counter-culture and such..."/>
+    <?php endif; ?>
+    <meta property="og:image" content="https://pile.sdbs.cz/favicon.png"/>
+
 </head>
 <body>
 
