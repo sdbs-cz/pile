@@ -27,7 +27,8 @@ class Uploader
                 array(
                     'pdf' => 'application/pdf',
                     'zip' => 'application/zip',
-                    'rar' => 'application/rar'
+                    'rar' => 'application/rar',
+                    'txt' => 'text/plain'
                 ),
                 true
             )) {
