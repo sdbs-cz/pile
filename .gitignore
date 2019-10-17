@@ -1,7 +1,9 @@
 pile.db
 docs
+dev
 
 _vendor
+*.ttf
 *.woff
 
 error_log
