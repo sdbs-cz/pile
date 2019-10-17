@@ -4,6 +4,7 @@
   },
   "require": {
     "erusev/parsedown": "^1.7",
+    "mpdf/mpdf": "^8.0",
     "ext-sqlite3": "*"
   }
 }
