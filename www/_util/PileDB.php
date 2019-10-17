@@ -4,9 +4,9 @@ class PileDB
 {
     private $db;
 
-    function __construct()
+    function __construct($dbpath = "pile.db")
     {
-        $this->db = new SQLite3("pile.db");
+        $this->db = new SQLite3($dbpath);
     }
 
     function prepare($statement)
