@@ -100,18 +100,18 @@
         <div class="label-column label-text">
             <h2 class="label-title"><?= $doc["Title"] ?></h2>
             <h3 class="label-otherinfo">
-                <? if ($doc["Author"]): ?>
+                <?php if ($doc["Author"]): ?>
                     By <?= $doc["Author"] ?>
-                <? endif; ?>
-                <? if ($doc["Published"]): ?>
+                <?php endif; ?>
+                <?php if ($doc["Published"]): ?>
                     <div class="label-otherinfo-date">(Published: <?= $doc["Published"] ?>)</div>
-                <? endif; ?>
+                <?php endif; ?>
             </h3>
             <p class="label-description"><?= $doc["Description"] ?></p>
         </div>
     </div>
     <div class="label-footer">
-        <? if (count($doc["tags"]) > 0): ?>
+        <?php if (count($doc["tags"]) > 0): ?>
             <div class="label-footer-tags">Filed under:
                 <?php
                 for ($i = 0; $i < count($doc["tags"]); $i++) {
@@ -119,7 +119,7 @@
                 }
                 ?>
             </div>
-        <? endif; ?>
+        <?php endif; ?>
         <div class="label-footer-url">
             Available at: https://pile.sdbs.cz/?item=<?= $doc["ID"] ?>
         </div>

@@ -42,6 +42,4 @@ try {
     http_response_code(500); ?>
     <h1>Something went wrong generating the label.</h1>
     <pre><?= $exception->getMessage() ?></pre>
-    <!--    <pre>--><?// print_r($exception); ?><!--</pre>--><?//
-}
-?>
+<?php } ?>
