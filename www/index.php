@@ -4,12 +4,19 @@ require '_util/PileDB.php';
 require '_vendor/erusev/parsedown/Parsedown.php';
 
 $db = new PileDB();
-$pd = new Parsedown();
 session_start();
+$page = new Template();
 
 if (isset($_GET["item"])) {
-    $doc = $db->fetchDoc($_GET["item"]);
-    $doc["Description"] = $pd->text($doc["Description"]);
+    try {
+        $doc = $db->fetchDoc($_GET["item"]);
+    } catch (DocumentNotFoundException $e) {
+        http_response_code(404);
+        $page->text = "Document not found.";
+        $page->redirect = "/";
+        echo $page->render("full_text.php");
+        die(0);
+    }
 
     $doc_template = new Template();
     $doc_template->doc = $doc;
@@ -27,7 +34,6 @@ if (isset($_GET["item"])) {
             $tag = $db->findTag($_GET["tag"]);
         }
         $docs = $db->listDocs($tag["ID"]);
-        $tag["Description"] = $pd->text($tag["Description"]);
         $selected_tag = $tag;
         $doc_list_template->tag = $tag;
     }
@@ -39,7 +45,6 @@ if (isset($_GET["item"])) {
     $content = $intro_template->render('front_intro.php');
 }
 
-$page = new Template();
 $page->doc_count = $db->getDocCount();
 $page->none_count = $db->getUntaggedDocCount();
 $page->tags = $db->getTags();

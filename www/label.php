@@ -6,13 +6,16 @@ require '_templates/Template.php';
 require '_util/PileDB.php';
 
 
-use Mpdf\Mpdf;
-
 $db = new PileDB();
-$doc = $db->fetchDoc($_GET["id"]);
-
-$pd = new Parsedown();
-$doc["Description"] = $pd->text($doc["Description"]);
+try {
+    $doc = $db->fetchDoc($_GET["id"]);
+} catch (DocumentNotFoundException $e) {
+    http_response_code(404);
+    $page->text = "Document not found.";
+    $page->redirect = "/";
+    echo $page->render("full_text.php");
+    die(0);
+}
 
 $front = new Template();
 $front->doc = $doc;
@@ -38,7 +41,7 @@ try {
     $mpdf->showImageErrors = true;
     $mpdf->WriteHTML($front->render("_templates/label_template.php"));
     $mpdf->Output();
-} catch (\Mpdf\MpdfException $exception) {
+} catch (Exception $exception) {
     http_response_code(500); ?>
     <h1>Something went wrong generating the label.</h1>
     <pre><?= $exception->getMessage() ?></pre>

@@ -1,7 +1,8 @@
-<?php if (isset($tag)): ?>
+<?php /** @noinspection PhpUndefinedVariableInspection */
+if (isset($tag)): ?>
     <div class="text tag-text">
         <h1><?= $tag["Name"] ?></h1>
-        <p class="tag-desc"><?= $tag["Description"] ?></p>
+        <p class="tag-desc"><?= $tag["HTMLDescription"] ?></p>
     </div>
 <?php endif; ?>
 

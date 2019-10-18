@@ -19,10 +19,10 @@
         </h3>
     <?php endif; ?>
 
-    <?php if (!empty($doc["Description"])): ?>
+    <?php if ($doc["HTMLDescription"]): ?>
         <p class="doc-description"><span
                     class="doc-description-intro"><?= empty($doc["URL"]) ? "Content" : "Description" ?>
-                : </span><?= $doc["Description"] ?></p>
+                : </span><?= $doc["HTMLDescription"] ?></p>
     <?php endif; ?>
 
     <div class="doc-link"><span class="doc-link-intro">Get print label: </span>

@@ -107,7 +107,7 @@
                     <div class="label-otherinfo-date">(Published: <?= $doc["Published"] ?>)</div>
                 <?php endif; ?>
             </h3>
-            <p class="label-description"><?= $doc["Description"] ?></p>
+            <p class="label-description"><?= $doc["HTMLDescription"] ?></p>
         </div>
     </div>
     <div class="label-footer">

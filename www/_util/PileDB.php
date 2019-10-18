@@ -2,11 +2,13 @@
 
 class PileDB
 {
-    private $db;
+    protected $db;
+    private $pd;
 
     function __construct($dbpath = "pile.db")
     {
         $this->db = new SQLite3($dbpath);
+        $this->pd = new Parsedown();
     }
 
     function prepare($statement)
@@ -59,11 +61,20 @@ class PileDB
         return $tags;
     }
 
+    /**
+     * Fetch pile document as an associative array.
+     *
+     * @throws DocumentNotFoundException when document isn't found.
+     */
     public function fetchDoc($id)
     {
         $stmt_doc = $this->db->prepare("SELECT * FROM Documents WHERE ID = :id");
         $stmt_doc->bindValue(":id", $id, SQLITE3_INTEGER);
         $doc = $stmt_doc->execute()->fetchArray(SQLITE3_ASSOC);
+        if ($doc == false) {
+            throw new DocumentNotFoundException();
+        }
+        $doc["HTMLDescription"] = $this->pd->text($doc["Description"]);
 
         $stmt_tags = $this->db->prepare("SELECT t.ID, t.Name FROM Tags t
                                                 JOIN DocumentsToTags dt ON t.ID = dt.Tag
@@ -194,7 +205,9 @@ class PileDB
     {
         $stmt = $this->db->prepare("SELECT * FROM Tags WHERE ID == :tag");
         $stmt->bindValue(":tag", $tag, SQLITE3_INTEGER);
-        return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $tag = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $tag["HTMLDescription"] = $this->pd->text($tag["Description"]);
+        return $tag;
     }
 
     public function updateTag($id, $name, $description)
@@ -242,6 +255,11 @@ class PileDB
             return -1;
         }
     }
+}
+
+class DocumentNotFoundException extends Exception
+{
+    // noop
 }
 
 ?>
