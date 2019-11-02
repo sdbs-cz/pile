@@ -1,7 +1,6 @@
 <?php
 require '_templates/Template.php';
 require '_util/PileDB.php';
-require '_vendor/erusev/parsedown/Parsedown.php';
 
 $db = new PileDB();
 session_start();

@@ -1,6 +1,5 @@
 <?php
 require '_vendor/autoload.php';
-require '_vendor/erusev/parsedown/Parsedown.php';
 
 require '_templates/Template.php';
 require '_util/PileDB.php';
