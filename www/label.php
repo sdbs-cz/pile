@@ -9,7 +9,7 @@ require '_util/PileDB.php';
 $db = new PileDB();
 try {
     $doc = $db->fetchDoc($_GET["id"]);
-} catch (DocumentNotFoundException $e) {
+} catch (NotFoundException $e) {
     http_response_code(404);
     $page->text = "Document not found.";
     $page->redirect = "/";

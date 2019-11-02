@@ -64,7 +64,7 @@ class PileDB
     /**
      * Fetch pile document as an associative array.
      *
-     * @throws DocumentNotFoundException when document isn't found.
+     * @throws NotFoundException when document isn't found.
      */
     public function fetchDoc($id)
     {
@@ -72,7 +72,7 @@ class PileDB
         $stmt_doc->bindValue(":id", $id, SQLITE3_INTEGER);
         $doc = $stmt_doc->execute()->fetchArray(SQLITE3_ASSOC);
         if ($doc == false) {
-            throw new DocumentNotFoundException();
+            throw new NotFoundException();
         }
         $doc["HTMLDescription"] = $this->pd->text($doc["Description"]);
 
@@ -201,11 +201,18 @@ class PileDB
         return $stmt->execute()->fetchArray(SQLITE3_ASSOC);
     }
 
+    /***
+     * Fetches tag as associative array.
+     * @throws NotFoundException
+     */
     public function fetchTag($tag)
     {
         $stmt = $this->db->prepare("SELECT * FROM Tags WHERE ID == :tag");
         $stmt->bindValue(":tag", $tag, SQLITE3_INTEGER);
         $tag = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        if ($tag == false) {
+            throw new NotFoundException();
+        }
         $tag["HTMLDescription"] = $this->pd->text($tag["Description"]);
         return $tag;
     }
@@ -257,7 +264,7 @@ class PileDB
     }
 }
 
-class DocumentNotFoundException extends Exception
+class NotFoundException extends Exception
 {
     // noop
 }

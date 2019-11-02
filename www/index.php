@@ -10,7 +10,7 @@ $page = new Template();
 if (isset($_GET["item"])) {
     try {
         $doc = $db->fetchDoc($_GET["item"]);
-    } catch (DocumentNotFoundException $e) {
+    } catch (NotFoundException $e) {
         http_response_code(404);
         $page->text = "Document not found.";
         $page->redirect = "/";
