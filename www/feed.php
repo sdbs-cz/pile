@@ -17,8 +17,8 @@ header('Content-Type: application/rss+xml');
         <?php foreach ($recent_docs as $doc): ?>
         <item>
             <title><?= $doc['Title'] ?></title>
-            <link><?= $doc['URL'] ?></link>
             <guid>https://pile.sdbs.cz/?item=<?= $doc['ID'] ?></guid>
+            <link>https://pile.sdbs.cz/?item=<?= $doc['ID'] ?></link>
             <description><?= $doc['Description'] ?></description>
         </item>
         <?php endforeach; ?>
