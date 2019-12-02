@@ -39,6 +39,24 @@ try {
 
     $mpdf->showImageErrors = true;
     $mpdf->WriteHTML($front->render("_templates/label_template.php"));
+    try {
+        if (preg_match('#^https?://pile.sdbs.cz/.*\.(pdf|PDF)$#', $doc['URL']) === 1) {
+            $tempName = tempnam("/tmp/", 'pile-merge');
+            file_put_contents($tempName, file_get_contents($doc["URL"]));
+            $pageCount = $mpdf->SetSourceFile($tempName);
+
+            for ($page = 1; $page <= $pageCount; $page++) {
+                $mpdf->AddPage();
+                $template = $mpdf->ImportPage($page);
+                $mpdf->UseTemplate($template);
+            }
+        }
+    } catch (Exception $exception) {
+        // noop
+    } finally {
+        unlink($tempName);
+    }
+
     $mpdf->Output();
 } catch (Exception $exception) {
     http_response_code(500); ?>

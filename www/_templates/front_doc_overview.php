@@ -25,7 +25,7 @@
                 : </span><?= $doc["HTMLDescription"] ?></p>
     <?php endif; ?>
 
-    <div class="doc-link"><span class="doc-link-intro">Get print label: </span>
+    <div class="doc-link"><span class="doc-link-intro">Get (document with) print label: </span>
         <a href="/label.php?id=<?= $doc["ID"] ?>">https://pile.sdbs.cz/label.php?id=<?= $doc["ID"] ?></a></div>
 
     <?php if (!empty($doc["URL"])): ?>
