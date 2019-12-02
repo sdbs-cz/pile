@@ -18,6 +18,11 @@
             font-size: 24px;
         }
 
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
         .exlibris {
             text-align: center;
             margin-bottom: 10px;
@@ -121,7 +126,7 @@
             </div>
         <?php endif; ?>
         <div class="label-footer-url">
-            Available at: https://pile.sdbs.cz/?item=<?= $doc["ID"] ?>
+            Available at: <a href="https://pile.sdbs.cz/?item=<?= $doc["ID"] ?>">https://pile.sdbs.cz/?item=<?= $doc["ID"] ?></a>
         </div>
     </div>
 </div>
