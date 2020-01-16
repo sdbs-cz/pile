@@ -5,22 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>The /-\ pile</title>
 
     <link rel="stylesheet" type="text/css" href="assets/main.css">
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <?php if ($selected_doc): ?>
+        <title>The /-\ pile: <?= $selected_doc['Title'] ?></title>
         <meta property="og:title" content="The /-\ Pile: <?= $selected_doc['Title'] ?>"/>
         <meta property="og:url" content="https://pile.sdbs.cz/?item=<?= $selected_doc['ID'] ?>"/>
         <meta property="og:description" content="<?= $selected_doc['Description'] ?>"/>
         <meta property="og:type" content="article"/>
     <?php elseif ($selected_tag): ?>
+        <title>The /-\ pile: Filed under "<?= $selected_tag['Name'] ?>"</title>
         <meta property="og:title" content="The /-\ Pile: Documents under '<?= $selected_tag['Name'] ?>'"/>
         <meta property="og:url" content="https://pile.sdbs.cz/?tag=<?= $selected_tag['ID'] ?>"/>
         <meta property="og:description" content="<?= $selected_tag['Description'] ?>"/>
         <meta property="og:type" content="website"/>
     <?php else: ?>
+        <title>The /-\ pile</title>
         <meta property="og:title" content="The /-\ Pile"/>
         <meta property="og:type" content="website"/>
         <meta property="og:url" content="https://pile.sdbs.cz/"/>
@@ -72,15 +74,15 @@
 </div>
 
 <script>
-	(function() {
-		window.counter = 'https://sdbs_pile.goatcounter.com/count'
+    (function () {
+        window.counter = 'https://sdbs_pile.goatcounter.com/count'
 
-		var script = document.createElement('script');
-		script.async = 1;
-		script.src = '//gc.zgo.at/count.js';
-		var ins = document.getElementsByTagName('script')[0];
-		ins.parentNode.insertBefore(script, ins)
-	})();
+        var script = document.createElement('script');
+        script.async = 1;
+        script.src = '//gc.zgo.at/count.js';
+        var ins = document.getElementsByTagName('script')[0];
+        ins.parentNode.insertBefore(script, ins)
+    })();
 </script>
 </body>
 </html>
