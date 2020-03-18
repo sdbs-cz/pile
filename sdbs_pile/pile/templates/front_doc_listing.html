@@ -1,0 +1,22 @@
+{% extends "front_base.html" %}
+
+{% block content %}
+    {% if tag %}
+        <div class="text tag-text">
+            <h1>{{ tag.name }}</h1>
+            <p class="tag-desc">{{ tag.description }}</p>
+        </div>
+    {% endif %}
+
+    {% for document in documents %}
+        <div class="text doc-item">
+            <a class="doc-item-link" href="{{ document.url }}">🔗</a>
+            <a href="{% url "pile:document" document.id %}">
+                <div class="doc-item-text">
+                    <h2>{{ document.title }}</h2>
+                    <h3>{{ document.author }} {{ document.published }}</h3>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}

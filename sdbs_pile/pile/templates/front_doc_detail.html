@@ -1,0 +1,56 @@
+{% extends "front_base.html" %}
+
+{% block title %}: {{ document.title }}{% endblock %}
+
+{% block content %}
+    <div class="text document">
+        <h1>{{ document.title }}</h1>
+
+        {% if document.author %}
+            <h2>{{ document.author }}</h2>
+        {% endif %}
+
+        {% if document.published %}
+            <h3>Published: {{ document.published }}</h3>
+        {% endif %}
+
+        {% if document.tags.count > 0 %}
+            <h3 class="doc-taglist">
+                <span>Tags:</span>
+                {% for tag in document.tags.all %}
+                    <li>
+                        <a href="{% url "pile:tag" tag.id %}" title="{{ tag.description }}">
+                            {{ tag.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </h3>
+        {% endif %}
+
+        {% if document.description %}
+            <div class="doc-description">
+            <span class="doc-description-intro">
+                {% if document.url %}Description{% else %}Content{% endif %}:
+            </span>
+                <p> {{ document.description }} </p>
+            </div>
+        {% endif %}
+
+        {#        <div class="doc-link"><span class="doc-link-intro">Get (document with) print label: </span>#}
+        {#            <a href="/label.php?id=<?= $doc[" ID"] ?>">https://pile.sdbs.cz/label.php?id=<?= $doc["ID"] ?></a></div>#}
+
+        {% if document.url %}
+            <div class="doc-link">
+                <span class="doc-link-intro">Access file at:</span>
+                <a href="{{ document.url }}">{{ document.url }}</a></div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block meta-og %}
+    <title>The /-\ pile: {{ document.title }}</title>
+    <meta property="og:title" content="The /-\ Pile: {{ document.title }}"/>
+    <meta property="og:url" content="{% url "pile:document" document.id %}"/>
+    <meta property="og:description" content="{{ document.description }}"/>
+    <meta property="og:type" content="article"/>
+{% endblock %}

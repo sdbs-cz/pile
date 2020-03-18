@@ -1,9 +1,6 @@
-pile.db
+db.sqlite3
 docs
 dev
 
-_vendor
 *.ttf
 *.woff
-
-error_log
