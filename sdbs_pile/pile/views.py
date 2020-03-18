@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib.syndication.views import Feed
 from django.db.models import Count
 from django.views.generic import TemplateView
 
@@ -60,3 +61,18 @@ class DocumentView(BasePileView):
             'document': Document.objects.get(pk=document_id),
             **base_context_data
         }
+
+
+class RecentlyUploadedFeed(Feed):
+    title = "The /-\\ pile"
+    link = "https://pile.sbds.cz"
+    description = "A list of most recently uploaded documents."
+
+    def items(self):
+        return Document.objects.order_by('-uploaded')[:5]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.description
