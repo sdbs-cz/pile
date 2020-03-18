@@ -9,7 +9,14 @@
 
     <link rel="stylesheet" type="text/css" href="{% static "main.css" %}">
     <link rel="icon" type="image/png" href="{% static "favicon.png" %}">
-    {% block meta-og %}{% endblock %}
+    {% block meta-og %}
+        <title>The /-\ pile</title>
+        <meta property="og:title" content="The /-\ Pile"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://pile.sdbs.cz/"/>
+        <meta property="og:description"
+              content="This is where we upload the stuff we consider important to the larger conceptual and thematic landscape of what we do: confronting apathy, inter-subjectivity, the human right to self-determination, counter-culture and such..."/>
+    {% endblock %}
     <meta property="og:image" content="{% static "favicon.png" %}"/>
 </head>
 <body>

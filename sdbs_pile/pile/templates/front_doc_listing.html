@@ -1,5 +1,7 @@
 {% extends "front_base.html" %}
 
+{% block title %}: Filed under "{{ tag.name }}"{% endblock %}
+
 {% block content %}
     {% if tag %}
         <div class="text tag-text">
@@ -19,4 +21,11 @@
             </a>
         </div>
     {% endfor %}
+{% endblock %}
+
+{% block meta-og %}
+    <meta property="og:title" content="The /-\ Pile: Documents under &quot;{{ tag.name }}&quot;"/>
+    <meta property="og:url" content="{% url "pile:tag" tag.id %}"/>
+    <meta property="og:description" content="{{ tag.description }}"/>
+    <meta property="og:type" content="website"/>
 {% endblock %}
