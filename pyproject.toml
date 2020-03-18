@@ -11,6 +11,7 @@ django-model-utils = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.13.0"
+gunicorn = "^20.0.4"
 
 [build-system]
 requires = ["poetry>=0.12"]
