@@ -1,6 +1,6 @@
 {% extends "front_base.html" %}
 
-{% block title %}: Filed under "{{ tag.name }}"{% endblock %}
+{% block title %}{% if tag %}: Filed under "{{ tag.name }}"{% else %}: All documents{% endif %}{% endblock %}
 
 {% block content %}
     {% if tag %}
@@ -24,8 +24,10 @@
 {% endblock %}
 
 {% block meta-og %}
-    <meta property="og:title" content="The /-\ Pile: Documents under &quot;{{ tag.name }}&quot;"/>
-    <meta property="og:url" content="{% url "pile:tag" tag.id %}"/>
-    <meta property="og:description" content="{{ tag.description }}"/>
-    <meta property="og:type" content="website"/>
+    {% if tag %}
+        <meta property="og:title" content="The /-\ Pile: Documents under &quot;{{ tag.name }}&quot;"/>
+        <meta property="og:url" content="{% url "pile:tag" tag.id %}"/>
+        <meta property="og:description" content="{{ tag.description }}"/>
+        <meta property="og:type" content="website"/>
+    {% endif %}
 {% endblock %}
