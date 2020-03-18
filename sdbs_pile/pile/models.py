@@ -22,18 +22,18 @@ class Document(SoftDeletableModel):
     tags = models.ManyToManyField(Tag, related_name="documents")
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
 
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('pile:document', args=[str(self.id)])
-
-    class Meta:
-        ordering = ['-id']
-
     @property
     def url(self):
         if self.file:
             return self.file.url
         return self.external_url
+
+    class Meta:
+        ordering = ['-id']
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('pile:document', args=[str(self.id)])
 
     def clean(self):
         if not (self.file or self.external_url):
