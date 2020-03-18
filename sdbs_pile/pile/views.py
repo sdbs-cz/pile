@@ -1,6 +1,8 @@
 # Create your views here.
 from django.contrib.syndication.views import Feed
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
+from django.http import Http404
 from django.views.generic import TemplateView
 
 from sdbs_pile.pile.models import Tag, Document
@@ -39,10 +41,13 @@ class TagView(BasePileView):
             documents = Document.objects.all()
         else:
             try:
-                tag = Tag.objects.get(id=int(name_or_id))
-            except ValueError:
-                tag = Tag.objects.get(name=name_or_id)
-            documents = tag.documents.all()
+                try:
+                    tag = Tag.objects.get(id=int(name_or_id))
+                except ValueError:
+                    tag = Tag.objects.get(name=name_or_id)
+                documents = tag.documents.all()
+            except ObjectDoesNotExist:
+                raise Http404
 
         return {
             'tag': tag,
@@ -57,8 +62,13 @@ class DocumentView(BasePileView):
     def get_context_data(self, document_id: int):
         base_context_data = super(DocumentView, self).get_context_data()
 
+        try:
+            document = Document.objects.get(pk=document_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
         return {
-            'document': Document.objects.get(pk=document_id),
+            'document': document,
             **base_context_data
         }
 
