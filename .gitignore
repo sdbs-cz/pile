@@ -1,5 +1,6 @@
 db.sqlite3
 docs
+static
 dev
 
 *.ttf
