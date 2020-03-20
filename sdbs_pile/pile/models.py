@@ -25,7 +25,7 @@ class Document(SoftDeletableModel):
     @property
     def url(self):
         if self.file:
-            return self.file.url
+            return f"/docs/{self.file.url}"
         return self.external_url
 
     class Meta:
