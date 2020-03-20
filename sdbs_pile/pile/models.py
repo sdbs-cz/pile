@@ -23,10 +23,10 @@ class DocumentManager(models.Manager):
         self._include_hidden = include_hidden
 
     def get_queryset(self):
-        if self._include_hidden:
-            return super().get_queryset()
-        else:
-            return super().get_queryset().filter(hidden=False)
+        query_set = super().get_queryset().filter(is_removed=False)
+        if not self._include_hidden:
+            return query_set.filter(hidden=False)
+        return query_set
 
     def untagged(self):
         return self.get_queryset().annotate(tag_count=Count('tags')).filter(tag_count=0)
