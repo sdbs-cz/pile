@@ -1,7 +1,8 @@
 # Create your views here.
+from operator import itemgetter
+
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count
 from django.http import Http404
 from django.views.generic import TemplateView
 
@@ -9,12 +10,25 @@ from sdbs_pile.pile.models import Tag, Document
 
 
 class BasePileView(TemplateView):
+
+    @property
+    def include_hidden(self):
+        return self.request.user.has_perm('document.see_hidden')
+
+    @property
+    def documents(self):
+        return Document.objects if self.include_hidden else Document.exclude_hidden
+
     def get_context_data(self, **kwargs):
+        tags = list(Tag.objects.all())
+        tags.sort(key=lambda tag: tag.name)
+        tags = [(tag, (tag.documents if self.include_hidden else tag.documents_exclude_hidden).count()) for tag in tags]
+        tags.sort(key=itemgetter(1), reverse=True)
+
         return {
-            'tags': sorted(sorted(Tag.objects.all(), key=lambda tag: tag.name),
-                           key=lambda tag: tag.documents.count(), reverse=True),
-            'document_count': Document.objects.count(),
-            'untagged_count': Document.objects.annotate(tag_count=Count('tags')).filter(tag_count__gt=0).count()
+            'tags': tags,
+            'document_count': self.documents.count(),
+            'untagged_count': self.documents.untagged().count()
         }
 
 
@@ -25,7 +39,7 @@ class IndexView(BasePileView):
         base_context_data = super(IndexView, self).get_context_data(**kwargs)
 
         return {
-            'recent_documents': Document.objects.order_by('-uploaded')[:5],
+            'recent_documents': self.documents.order_by('-uploaded')[:5],
             **base_context_data
         }
 
@@ -38,19 +52,23 @@ class TagView(BasePileView):
 
         if name_or_id == "*":
             tag = None
-            documents = Document.objects.all()
+            documents = self.documents.all()
+        elif name_or_id == "_":
+            tag = "UNTAGGED"
+            documents = self.documents.untagged()
         else:
             try:
                 try:
                     tag = Tag.objects.get(id=int(name_or_id))
                 except ValueError:
                     tag = Tag.objects.get(name=name_or_id)
-                documents = tag.documents.all()
+                documents = tag.documents.all() if self.include_hidden else tag.documents_exclude_hidden
             except ObjectDoesNotExist:
                 raise Http404
 
         return {
-            'tag': tag,
+            'tag': tag if tag != "UNTAGGED" else None,
+            'untagged': tag == "UNTAGGED",
             'documents': documents,
             **base_context_data
         }
@@ -63,7 +81,7 @@ class DocumentView(BasePileView):
         base_context_data = super(DocumentView, self).get_context_data()
 
         try:
-            document = Document.objects.get(pk=document_id)
+            document = self.documents.get(pk=document_id)
         except ObjectDoesNotExist:
             raise Http404
 

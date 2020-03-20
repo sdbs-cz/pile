@@ -28,12 +28,12 @@
     <div id="sidebar-taglist">
         <ul>
             <li id="sidebar-taglist-top"><a href="{% url "pile:tag" "*" %}">ALL ({{ document_count }})</a></li>
-            {% if untagged.count %}
-                <li id="sidebar-taglist-top"><a href="?tag=_">UNTAGGED ({{ untagged_count }})</a></li>
+            {% if untagged_count %}
+                <li id="sidebar-taglist-top"><a href="/tag/_">UNTAGGED ({{ untagged_count }})</a></li>
             {% endif %}
-            {% for tag in tags %}
-                {% if tag.documents.count > 0 %}
-                    <li><a href="{% url 'pile:tag' tag.id %}">{{ tag.name }} ({{ tag.documents.count }})</a></li>
+            {% for tag, tag_count in tags %}
+                {% if tag_count > 0 %}
+                    <li><a href="{% url 'pile:tag' tag.id %}">{{ tag.name }} ({{ tag_count }})</a></li>
                 {% endif %}
             {% endfor %}
         </ul>
