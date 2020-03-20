@@ -32,9 +32,9 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('is_removed',)
-    list_filter = ('tags', DocumentExternalListFilter)
+    list_display = ('title', 'author', 'published', 'hidden', 'filed_under')
+    list_filter = ('tags', 'hidden', DocumentExternalListFilter)
     search_fields = ('title', 'author', 'published')
-    list_display = ('title', 'author', 'published', 'filed_under')
 
     @staticmethod
     def filed_under(document: Document):
