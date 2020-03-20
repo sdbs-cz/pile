@@ -97,7 +97,7 @@ class RecentlyUploadedFeed(Feed):
     description = "A list of most recently uploaded documents."
 
     def items(self):
-        return Document.objects.order_by('-uploaded')[:5]
+        return Document.exclude_hidden.order_by('-uploaded')[:5]
 
     def item_title(self, item):
         return item.title
