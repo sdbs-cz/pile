@@ -41,5 +41,8 @@ class DocumentAdmin(admin.ModelAdmin):
         return ", ".join(tag.name for tag in document.tags.all())
 
 
+admin.site.site_title = '/-\\ pile'
+admin.site.site_header = '/-\\ pile administration'
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Document, DocumentAdmin)
