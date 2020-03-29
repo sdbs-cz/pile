@@ -32,6 +32,12 @@ class DocumentManager(models.Manager):
         return self.get_queryset().annotate(tag_count=Count('tags')).filter(tag_count=0)
 
 
+class DocumentStatus(models.TextChoices):
+    REFERENCE = "REF", "Referential"
+    STANDARD = "STD", "Standard"
+    FRAGMENT = "FRG", "Fragment"
+
+
 class Document(SoftDeletableModel):
     title = models.CharField(max_length=512, null=False, blank=False)
     author = models.CharField(max_length=512, null=False, blank=True)
@@ -40,6 +46,8 @@ class Document(SoftDeletableModel):
     external_url = models.URLField(null=True, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
     public = models.BooleanField(default=True, null=False, blank=False)
+    status = models.CharField(null=False, blank=False,
+                              max_length=3, choices=DocumentStatus.choices, default=DocumentStatus.STANDARD)
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
 
