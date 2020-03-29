@@ -34,9 +34,9 @@ class DocumentManager(models.Manager):
 
 class Document(SoftDeletableModel):
     title = models.CharField(max_length=512, null=False, blank=False)
-    description = models.TextField(null=False, blank=True)
     author = models.CharField(max_length=512, null=False, blank=True)
     published = models.CharField(max_length=128, null=False, blank=True)
+    description = models.TextField(null=False, blank=True)
     external_url = models.URLField(null=True, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
     public = models.BooleanField(default=True, null=False, blank=False)
