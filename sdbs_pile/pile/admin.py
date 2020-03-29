@@ -25,9 +25,11 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "True":
-            return queryset.filter(Q(external_url__isnull=False) & ~Q(external_url__contains="pile.sdbs.cz"))
+            return queryset.filter((Q(file__isnull=True) | Q(file='')) & ~Q(external_url__contains="sdbs"))
+        elif self.value() == "False":
+            return queryset.filter((Q(file__isnull=False) & ~Q(file='')) | Q(external_url__contains="pile.sdbs.cz"))
         else:
-            return queryset.filter(Q(external_url__isnull=False) | Q(external_url__contains="pile.sdbs.cz"))
+            return queryset
 
 
 class DocumentAdmin(admin.ModelAdmin):
