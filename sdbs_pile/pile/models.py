@@ -25,7 +25,7 @@ class DocumentManager(models.Manager):
     def get_queryset(self):
         query_set = super().get_queryset().filter(is_removed=False)
         if not self._include_hidden:
-            return query_set.filter(hidden=False)
+            return query_set.filter(public=True)
         return query_set
 
     def untagged(self):
@@ -39,7 +39,7 @@ class Document(SoftDeletableModel):
     published = models.CharField(max_length=128, null=False, blank=True)
     external_url = models.URLField(null=True, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
-    hidden = models.BooleanField(default=False, null=False, blank=False)
+    public = models.BooleanField(default=True, null=False, blank=False)
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
 
