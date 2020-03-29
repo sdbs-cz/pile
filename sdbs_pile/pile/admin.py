@@ -35,10 +35,21 @@ class DocumentAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'published', 'public', 'filed_under')
     list_filter = ('tags', 'public', DocumentExternalListFilter)
     search_fields = ('title', 'author', 'published')
+    actions = ('make_published', 'make_hidden')
 
     @staticmethod
     def filed_under(document: Document):
         return ", ".join(tag.name for tag in document.tags.all())
+
+    def make_published(self, _, queryset):
+        queryset.update(public=True)
+
+    make_published.short_description = "Mark selected articles as public"
+
+    def make_hidden(self, _, queryset):
+        queryset.update(public=False)
+
+    make_hidden.short_description = "Mark selected articles as hidden"
 
 
 admin.site.site_title = '/-\\ pile'
