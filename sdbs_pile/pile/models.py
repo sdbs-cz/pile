@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db.models import Count
+from django.urls import reverse
 from model_utils.models import SoftDeletableModel
 
 
@@ -56,9 +57,13 @@ class Document(SoftDeletableModel):
 
     @property
     def url(self):
-        if self.file:
-            return f"/docs/{self.file.url}"
+        if self.is_local_pdf:
+            return reverse("pile:label", args=[self.id]) + "?fallback=1"
         return self.external_url
+
+    @property
+    def is_local_pdf(self):
+        return self.file.name is not None and self.file.name.endswith(".pdf")
 
     class Meta:
         ordering = ['-id']

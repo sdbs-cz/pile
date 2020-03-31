@@ -8,6 +8,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, FileResponse
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 from django.views import View
@@ -93,8 +94,6 @@ class DocumentView(BasePileView):
         except ObjectDoesNotExist:
             raise Http404
 
-        document.is_pdf = document.file.name is not None and document.file.name.endswith(".pdf")
-
         return {
             'document': document,
             **base_context_data
@@ -114,8 +113,8 @@ class DocumentWithLabel(BasePileViewMixin):
         weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(label_stream)
         label_stream.seek(0)
 
-        final_stream = label_stream
-
+        final_stream = None
+        concat_succeeded = False
         if document.file:
             try:
                 with open(document.file.path, 'rb') as document_fp:
@@ -127,8 +126,19 @@ class DocumentWithLabel(BasePileViewMixin):
                     final_stream = io.BytesIO()
                     writer.write(final_stream)
                     final_stream.seek(0)
+                    concat_succeeded = True
             except Exception as exc:
                 logging.exception(exc)
+
+        if not concat_succeeded:
+            if self.request.GET.get("fallback"):
+                if document.is_local_pdf:
+                    return FileResponse(document.file,
+                                        filename=f"pile_{document.id}__{slugify(document.title)}.pdf",
+                                        content_type="application/pdf")
+                else:
+                    return redirect(document.external_url)
+            else:
                 final_stream = label_stream
 
         return FileResponse(final_stream,
