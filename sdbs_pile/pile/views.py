@@ -2,6 +2,7 @@
 import io
 import logging
 from operator import itemgetter
+from random import choice
 
 import weasyprint
 from PyPDF2 import PdfFileWriter, PdfFileReader
@@ -49,6 +50,7 @@ class IndexView(BasePileView):
 
         return {
             'recent_documents': self.documents.order_by('-uploaded')[:5],
+            'random_document': choice(self.documents.all()),
             **base_context_data
         }
 

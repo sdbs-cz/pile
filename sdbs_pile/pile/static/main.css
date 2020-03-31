@@ -197,12 +197,17 @@ ul > li:before {
     }
 }
 
+.random-tags {
+    font-style: italic;
+    color: white;
+    margin: .2em 0;
+}
 
 .recent-additions li {
     margin-bottom: .5em;
 }
 
-.recent-additions-desc {
+.index-listing-desc {
     font-size: 12pt;
     color: #bfbfbf;
     padding-left: calc(20px + .5rem);
