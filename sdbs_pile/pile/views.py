@@ -123,6 +123,7 @@ class DocumentWithLabel(BasePileViewMixin):
                     for reader in map(PdfFileReader, (label_stream, document_fp)):
                         for n in range(reader.getNumPages()):
                             writer.addPage(reader.getPage(n))
+                    writer.addMetadata({u'/Title': f"/-\\ pile #{document.id}: {document.title}"})
                     final_stream = io.BytesIO()
                     writer.write(final_stream)
                     final_stream.seek(0)
