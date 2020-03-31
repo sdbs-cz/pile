@@ -1,8 +1,10 @@
 # Create your views here.
 import io
+import logging
 from operator import itemgetter
 
 import weasyprint
+from PyPDF2 import PdfFileWriter, PdfFileReader
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, FileResponse
@@ -106,11 +108,27 @@ class DocumentWithLabel(BasePileViewMixin):
 
         label_html = render_to_string("label.html", {'document': document})
 
-        stream = io.BytesIO()
-        weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(stream)
-        stream.seek(0)
+        label_stream = io.BytesIO()
+        weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(label_stream)
+        label_stream.seek(0)
 
-        return FileResponse(stream,
+        final_stream = label_stream
+
+        if document.file:
+            try:
+                with open(document.file.path, 'rb') as document_fp:
+                    writer = PdfFileWriter()
+                    for reader in map(PdfFileReader, (label_stream, document_fp)):
+                        for n in range(reader.getNumPages()):
+                            writer.addPage(reader.getPage(n))
+                    final_stream = io.BytesIO()
+                    writer.write(final_stream)
+                    final_stream.seek(0)
+            except Exception as exc:
+                logging.exception(exc)
+                final_stream = label_stream
+
+        return FileResponse(final_stream,
                             filename=f"pile_{document.id}__{slugify(document.title)}.pdf",
                             content_type="application/pdf")
 
