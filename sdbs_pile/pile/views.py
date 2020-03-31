@@ -93,6 +93,8 @@ class DocumentView(BasePileView):
         except ObjectDoesNotExist:
             raise Http404
 
+        document.is_pdf = document.file.name is not None and document.file.name.endswith(".pdf")
+
         return {
             'document': document,
             **base_context_data

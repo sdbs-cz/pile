@@ -36,7 +36,8 @@
             </div>
         {% endif %}
 
-        <div class="doc-link"><span class="doc-link-intro">Get print label: </span>
+        <div class="doc-link">
+            <span class="doc-link-intro">Get {% if document.is_pdf %}document with {% endif %}print label: </span>
             <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a></div>
 
         {% if document.url %}
