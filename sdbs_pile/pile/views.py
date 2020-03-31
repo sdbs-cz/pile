@@ -1,16 +1,20 @@
 # Create your views here.
+import io
 from operator import itemgetter
 
+import weasyprint
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
+from django.http import Http404, FileResponse
+from django.template.loader import render_to_string
+from django.utils.text import slugify
+from django.views import View
 from django.views.generic import TemplateView
 
 from sdbs_pile.pile.models import Tag, Document
 
 
-class BasePileView(TemplateView):
-
+class BasePileViewMixin(View):
     @property
     def include_hidden(self):
         return self.request.user.has_perm('document.see_hidden')
@@ -19,6 +23,8 @@ class BasePileView(TemplateView):
     def documents(self):
         return Document.objects if self.include_hidden else Document.exclude_hidden
 
+
+class BasePileView(BasePileViewMixin, TemplateView):
     def get_context_data(self, **kwargs):
         tags = list(Tag.objects.all())
         tags.sort(key=lambda tag: tag.name)
@@ -89,6 +95,24 @@ class DocumentView(BasePileView):
             'document': document,
             **base_context_data
         }
+
+
+class DocumentWithLabel(BasePileViewMixin):
+    def get(self, request, document_id: int):
+        try:
+            document = self.documents.get(pk=document_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        label_html = render_to_string("label.html", {'document': document})
+
+        stream = io.BytesIO()
+        weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(stream)
+        stream.seek(0)
+
+        return FileResponse(stream,
+                            filename=f"pile_{document.id}__{slugify(document.title)}.pdf",
+                            content_type="application/pdf")
 
 
 class RecentlyUploadedFeed(Feed):

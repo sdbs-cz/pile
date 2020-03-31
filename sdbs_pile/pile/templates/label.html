@@ -1,0 +1,140 @@
+{% load static %}
+
+<head>
+    <title>LABEL FOR "{{ document.title }}"</title>
+    <!--suppress CssNoGenericFontName -->
+    <style>
+        body {
+            font-family: prociono;
+            font-size: 14px;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+            bookmark-level: none;
+        }
+
+        h1, h2 {
+            font-size: 24px;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .exlibris {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .label-outer {
+            width: 100%;
+            border: 5px solid black;
+            padding: 10px;
+        }
+
+        .label-column {
+            float: left;
+        }
+
+        .label-stamp-outer {
+            width: 20%;
+        }
+
+        .label-stamp {
+            width: 100%;
+            border: 2px solid black;
+        }
+
+        #pile-logo {
+            width: 80%;
+            padding: 10px 10%;
+        }
+
+        .label-stamp-subtitle {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 20px;
+
+            margin-top: -12px; /* prociono specific */
+        }
+
+        .label-text {
+            float: right;
+            width: 77.5%;
+        }
+
+        .label-title {
+            margin: 0;
+            padding: 0;
+        }
+
+        .label-otherinfo {
+            font-size: 14px;
+        }
+
+        .label-description {
+            text-align: justify;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+
+        .label-footer {
+            width: 100%;
+            text-align: right;
+            clear: both;
+        }
+
+        .absolute-footer {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<h1 class="exlibris">ex libris /-\ pile</h1>
+<div class="label-outer">
+    <div class="label-upper">
+        <div class="label-stamp-outer">
+            <div class="label-column label-stamp">
+                <img id="pile-logo" src="{% static "pile_black.svg" %}" alt="/-\ Pile"/>
+                <div class="label-stamp-subtitle">#{{ document.id|stringformat:"04d" }}</div>
+            </div>
+        </div>
+        <div class="label-column label-text">
+            <h2 class="label-title">{{ document.title }}</h2>
+            <h3 class="label-otherinfo">
+                {% if document.author %}
+                    By {{ document.author }}
+                {% endif %}
+                {% if document.published %}
+                    <div class="label-otherinfo-date">(Published: {{ document.published }})</div>
+                {% endif %}
+            </h3>
+            <p class="label-description">{{ document.description }}</p>
+        </div>
+    </div>
+    <div class="label-footer">
+        {% if document.tags.count > 0 %}
+            <div class="label-footer-tags">Filed under:
+            {% for tag in document.tags.all %}
+                {{ tag.name }}
+            {% endfor %}
+        {% endif %}
+        <div class="label-footer-url">
+            Available at:
+            <a href="https://pile.sdbs.cz/item/{{ document.id }}">https://pile.sdbs.cz/item/{{ document.id }}</a>
+        </div>
+        </div>
+    </div>
+    <div class="absolute-footer">
+        read or share
+    </div>
+</body>

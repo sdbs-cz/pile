@@ -8,6 +8,7 @@ authors = ["Tomáš Mládek <t@mldk.cz>"]
 python = "^3.8"
 django = "^3.0.4"
 django-model-utils = "^4.0.0"
+weasyprint = "^51"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.13.0"
