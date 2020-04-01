@@ -51,6 +51,11 @@
                 <span class="doc-link-intro">Access file at:</span>
                 <a href="{{ document.url }}">{{ document.url }}</a>
             </div>
+
+            <div class="doc-link">
+                <span class="doc-link-intro">Get label for file at:</span>
+                <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
