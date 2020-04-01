@@ -117,7 +117,7 @@ class DocumentWithLabel(BasePileViewMixin):
 
         final_stream = None
         concat_succeeded = False
-        if document.file:
+        if document.is_local_pdf:
             try:
                 with open(document.file.path, 'rb') as document_fp:
                     writer = PdfFileWriter()
@@ -141,6 +141,7 @@ class DocumentWithLabel(BasePileViewMixin):
                 else:
                     return redirect(document.external_url)
             else:
+                label_stream.seek(0)
                 final_stream = label_stream
 
         return FileResponse(final_stream,
