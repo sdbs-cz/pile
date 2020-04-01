@@ -1,3 +1,5 @@
+import bleach
+import markdown2
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.db import models
@@ -54,6 +56,14 @@ class Document(SoftDeletableModel):
 
     objects = DocumentManager()
     exclude_hidden = DocumentManager(include_hidden=False)
+
+    @property
+    def html_description(self):
+        return markdown2.markdown(self.description)
+
+    @property
+    def plain_description(self):
+        return bleach.clean(self.html_description, tags=[], strip=True)
 
     @property
     def url(self):

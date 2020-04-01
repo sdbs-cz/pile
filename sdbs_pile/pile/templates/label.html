@@ -118,7 +118,7 @@
                     <div class="label-otherinfo-date">(Published: {{ document.published }})</div>
                 {% endif %}
             </h3>
-            <p class="label-description">{{ document.description }}</p>
+            <p class="label-description">{{ document.html_description | safe }}</p>
         </div>
     </div>
     <div class="label-footer">

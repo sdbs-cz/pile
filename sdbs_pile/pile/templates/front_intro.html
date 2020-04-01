@@ -22,7 +22,7 @@
                     {% endif %}
                 </div>
                 <div class="index-listing-desc">
-                    {{ random_document.description }}
+                    {{ random_document.html_description | safe }}
                 </div>
             </a>
         </div>
@@ -40,7 +40,7 @@
                         {{ document.title }}
 
                         <div class="index-listing-desc">
-                            {{ document.description }}
+                            {{ document.html_description | safe }}
                         </div>
                     </a>
                 </li>

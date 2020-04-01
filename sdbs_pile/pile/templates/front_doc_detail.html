@@ -32,7 +32,7 @@
             <span class="doc-description-intro">
                 {% if document.url %}Description{% else %}Content{% endif %}:
             </span>
-                <p> {{ document.description }} </p>
+                <p> {{ document.html_description | safe }} </p>
             </div>
         {% endif %}
 
@@ -59,6 +59,6 @@
     <title>The /-\ pile: {{ document.title }}</title>
     <meta property="og:title" content="The /-\ Pile: {{ document.title }}"/>
     <meta property="og:url" content="{% url "pile:document" document.id %}"/>
-    <meta property="og:description" content="{{ document.description }}"/>
+    <meta property="og:description" content="{{ document.plain_description }}"/>
     <meta property="og:type" content="article"/>
 {% endblock %}
