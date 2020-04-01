@@ -8,7 +8,7 @@ import weasyprint
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, FileResponse
+from django.http import Http404, FileResponse, HttpRequest
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.text import slugify
@@ -102,23 +102,39 @@ class DocumentView(BasePileView):
         }
 
 
-class DocumentWithLabel(BasePileViewMixin):
-    def get(self, request, document_id: int):
+class LabelView(BasePileViewMixin):
+    def get(self, request: HttpRequest, document_id: int):
         try:
             document = self.documents.get(pk=document_id)
         except ObjectDoesNotExist:
             raise Http404
 
+        label_stream = self.get_label(request, document)
+        return FileResponse(label_stream,
+                            filename=f"pile_{document.id}__label__{slugify(document.title)}.pdf",
+                            content_type="application/pdf")
+
+    @staticmethod
+    def get_label(request, document):
         label_html = render_to_string("label.html", {'document': document})
 
-        label_stream = io.BytesIO()
-        weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(label_stream)
-        label_stream.seek(0)
+        stream = io.BytesIO()
+        weasyprint.HTML(base_url=request.build_absolute_uri(), string=label_html).write_pdf(stream)
+        stream.seek(0)
+        return stream
 
-        final_stream = None
-        concat_succeeded = False
+
+class DocumentWithLabelView(BasePileViewMixin):
+    def get(self, request: HttpRequest, document_id: int):
+        try:
+            document = self.documents.get(pk=document_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
         if document.is_local_pdf:
             try:
+                label_stream = LabelView.get_label(request, document)
+
                 with open(document.file.path, 'rb') as document_fp:
                     writer = PdfFileWriter()
                     for reader in map(PdfFileReader, (label_stream, document_fp)):
@@ -127,26 +143,15 @@ class DocumentWithLabel(BasePileViewMixin):
                     writer.addMetadata({u'/Title': f"/-\\ pile #{document.id}: {document.title}"})
                     final_stream = io.BytesIO()
                     writer.write(final_stream)
-                    final_stream.seek(0)
-                    concat_succeeded = True
+
+                final_stream.seek(0)
+                return FileResponse(final_stream,
+                                    filename=f"pile_{document.id}__label__{slugify(document.title)}.pdf",
+                                    content_type="application/pdf")
             except Exception as exc:
                 logging.exception(exc)
 
-        if not concat_succeeded:
-            if self.request.GET.get("fallback"):
-                if document.is_local_pdf:
-                    return FileResponse(document.file,
-                                        filename=f"pile_{document.id}__{slugify(document.title)}.pdf",
-                                        content_type="application/pdf")
-                else:
-                    return redirect(document.external_url)
-            else:
-                label_stream.seek(0)
-                final_stream = label_stream
-
-        return FileResponse(final_stream,
-                            filename=f"pile_{document.id}__{slugify(document.title)}.pdf",
-                            content_type="application/pdf")
+        return redirect(document.url)
 
 
 class RecentlyUploadedFeed(Feed):

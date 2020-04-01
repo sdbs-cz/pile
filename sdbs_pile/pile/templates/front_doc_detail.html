@@ -39,12 +39,12 @@
         {% if document.is_local_pdf %}
             <div class="doc-link">
                 <span class="doc-link-intro">Access file as:</span>
-                <a href="{{ document.url }}">Entry #{{ document.id }} of /-\ pile</a>
+                <a href="{% url "pile:retrieve" document.id %}">Entry #{{ document.id }} of /-\ pile</a>
             </div>
 
             <div class="doc-link">
                 <span class="doc-link-intro">Get original document at: </span>
-                <a href="/docs/{{ document.file.url }}">{{ document.file.url }}</a>
+                <a href="{{ document.url }}">{{ document.url }}</a>
             </div>
         {% else %}
             <div class="doc-link">

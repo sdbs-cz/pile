@@ -21,7 +21,7 @@
 
     {% for document in documents %}
         <div class="text doc-item">
-            <a class="doc-item-link" href="{{ document.url }}">🔗</a>
+            <a class="doc-item-link" href="{% url "pile:retrieve" document.id %}">🔗</a>
             <a href="{% url "pile:document" document.id %}">
                 <div class="doc-item-text">
                     <h2>{{ document.title }}</h2>
