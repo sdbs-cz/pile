@@ -1,6 +1,7 @@
 # Create your views here.
 import io
 import logging
+from datetime import datetime
 from operator import itemgetter
 from random import choice
 
@@ -162,8 +163,11 @@ class RecentlyUploadedFeed(Feed):
     def items(self):
         return Document.exclude_hidden.order_by('-uploaded')[:5]
 
-    def item_title(self, item):
+    def item_title(self, item: Document):
         return item.title
 
-    def item_description(self, item):
+    def item_description(self, item: Document):
         return item.description
+
+    def item_pubdate(self, item: Document):
+        return item.uploaded or datetime.now()
