@@ -51,7 +51,7 @@ class IndexView(BasePileView):
 
         return {
             'recent_documents': self.documents.order_by('-uploaded')[:5],
-            'random_document': choice(self.documents.all()),
+            'random_document': choice(self.documents.all()[5:]),
             **base_context_data
         }
 
