@@ -26,7 +26,7 @@ class BasePileViewMixin(View):
 
     @property
     def documents(self):
-        return Document.objects if self.include_hidden else Document.exclude_hidden
+        return Document.objects if self.include_hidden else Document.objects.exclude_hidden()
 
 
 class BasePileView(BasePileViewMixin, TemplateView):
@@ -161,7 +161,7 @@ class RecentlyUploadedFeed(Feed):
     description = "A list of most recently uploaded documents."
 
     def items(self):
-        return Document.exclude_hidden.order_by('-uploaded')[:5]
+        return Document.objects.exclude_hidden().order_by('-uploaded')[:5]
 
     def item_title(self, item: Document):
         return item.title

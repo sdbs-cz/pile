@@ -3,7 +3,7 @@ import markdown2
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q, QuerySet
 from model_utils.models import SoftDeletableModel
 
 
@@ -13,34 +13,32 @@ class Tag(SoftDeletableModel):
 
     @property
     def documents_exclude_hidden(self):
-        return Document.exclude_hidden.filter(tags__in=[self])
+        return Document.objects.exclude_hidden().filter(tags__in=[self])
 
     def __str__(self):
         return self.name
 
 
-class DocumentManager(models.Manager):
-    def __init__(self, include_hidden=True):
-        super(DocumentManager, self).__init__()
-        self._include_hidden = include_hidden
-
-    def get_queryset(self):
-        query_set = super().get_queryset().filter(is_removed=False)
-        if not self._include_hidden:
-            return query_set.filter(public=True)
-        return query_set
+class DocumentQuerySet(QuerySet):
+    def exclude_hidden(self):
+        return super().filter(public=True)
 
     def untagged(self):
-        return self.get_queryset().annotate(tag_count=Count('tags')).filter(tag_count=0)
+        return super().annotate(tag_count=Count('tags')).filter(tag_count=0)
 
+    def local(self):
+        return super().filter((Q(file__isnull=False) & ~Q(file='')) | Q(external_url__contains="pile.sdbs.cz"))
 
-class DocumentStatus(models.TextChoices):
-    REFERENCE = "REF", "Referential"
-    STANDARD = "STD", "Standard"
-    FRAGMENT = "FRG", "Fragment"
+    def external(self):
+        return super().filter((Q(file__isnull=True) | Q(file='')) & ~Q(external_url__contains="pile.sdbs.cz"))
 
 
 class Document(SoftDeletableModel):
+    class DocumentStatus(models.TextChoices):
+        REFERENCE = "REF", "Referential"
+        STANDARD = "STD", "Standard"
+        FRAGMENT = "FRG", "Fragment"
+
     title = models.CharField(max_length=512, null=False, blank=False)
     author = models.CharField(max_length=512, null=False, blank=True)
     published = models.CharField(max_length=128, null=False, blank=True)
@@ -53,8 +51,7 @@ class Document(SoftDeletableModel):
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
 
-    objects = DocumentManager()
-    exclude_hidden = DocumentManager(include_hidden=False)
+    objects = DocumentQuerySet.as_manager()
 
     @property
     def html_description(self):

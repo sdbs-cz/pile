@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.db.models import Q
 
 from sdbs_pile.pile.models import Tag, Document
 
@@ -25,9 +24,9 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "True":
-            return queryset.filter((Q(file__isnull=True) | Q(file='')) & ~Q(external_url__contains="sdbs"))
+            return queryset.external()
         elif self.value() == "False":
-            return queryset.filter((Q(file__isnull=False) & ~Q(file='')) | Q(external_url__contains="pile.sdbs.cz"))
+            return queryset.local()
         else:
             return queryset
 
