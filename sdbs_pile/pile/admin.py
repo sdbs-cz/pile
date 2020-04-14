@@ -33,10 +33,15 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('is_removed',)
-    list_display = ('title', 'author', 'published', 'public', 'filed_under')
+    list_display = ('title', 'author', 'published', 'has_file', 'public', 'filed_under')
     list_filter = ('tags', 'public', DocumentExternalListFilter)
     search_fields = ('title', 'author', 'published')
     actions = ('make_published', 'make_hidden')
+
+    def has_file(self, document: Document):
+        return document.file is not None and document.file != ''
+
+    has_file.boolean = True
 
     @staticmethod
     def filed_under(document: Document):
