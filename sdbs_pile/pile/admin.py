@@ -39,7 +39,7 @@ class DocumentAdmin(admin.ModelAdmin):
     actions = ('make_published', 'make_hidden')
 
     def has_file(self, document: Document):
-        return document.file is not None and document.file != ''
+        return document.file is not None and str(document.file).strip() != ''
 
     has_file.boolean = True
 
