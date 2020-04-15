@@ -10,23 +10,25 @@
             postupně dávat ty nejdůležitější nebo nejzajímavější věci, zatim se o tom ale nikde moc nešiřte.</p>
         <p class="intro sign">/-\</p>
     </div>
-    <div class="text">
-        <h2>Random document</h2>
-        <div class="random-document">
-            <a href="{% url 'pile:document' random_document.id %}">
-                <span>#{{ random_document.id }}: {{ random_document.title }}</span>
+    {% if random_document %}
+        <div class="text">
+            <h2>Random document</h2>
+            <div class="random-document">
+                <a href="{% url 'pile:document' random_document.id %}">
+                    <span>#{{ random_document.id }}: {{ random_document.title }}</span>
 
-                <div class="index-listing-desc">
-                    {% if random_document.tags.count > 0 %}
-                        <div class="random-tags">Filed under: {{ random_document.tags.all | join:" / " }}</div>
-                    {% endif %}
-                </div>
-                <div class="index-listing-desc">
-                    {{ random_document.html_description | safe }}
-                </div>
-            </a>
+                    <div class="index-listing-desc">
+                        {% if random_document.tags.count > 0 %}
+                            <div class="random-tags">Filed under: {{ random_document.tags.all | join:" / " }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="index-listing-desc">
+                        {{ random_document.html_description | safe }}
+                    </div>
+                </a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="text recent-additions">
         <h2>Recent additions</h2>
