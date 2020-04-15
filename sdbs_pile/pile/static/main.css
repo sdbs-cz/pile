@@ -100,6 +100,20 @@ ul > li:before {
     margin: 0 0 1rem 0;
 }
 
+.docs-header {
+    text-align: center;
+    text-transform: uppercase;
+    background: #303030;
+}
+
+.docs-header h3 {
+    margin: 0;
+}
+
+.doc-item {
+    padding: 1.2rem 1rem;
+}
+
 .doc-item-text {
     display: inline-block;
     margin-right: 3em;

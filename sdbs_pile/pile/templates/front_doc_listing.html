@@ -19,16 +19,21 @@
         </div>
     {% endif %}
 
-    {% for document in documents %}
-        <div class="text doc-item">
-            <a class="doc-item-link" href="{% url "pile:retrieve" document.id %}">🔗</a>
-            <a href="{% url "pile:document" document.id %}">
-                <div class="doc-item-text">
-                    <h2>{{ document.title }}</h2>
-                    <h3>{{ document.author }} {{ document.published }}</h3>
+    {% for status, documents in status_documents.items %}
+        {% if documents|length > 0 %}
+            <div class="text docs-header"><h3>{{ status.label }}</h3></div>
+            {% for document in documents %}
+                <div class="text doc-item">
+                    <a class="doc-item-link" href="{% url "pile:retrieve" document.id %}">🔗</a>
+                    <a href="{% url "pile:document" document.id %}">
+                        <div class="doc-item-text">
+                            <h2>{{ document.title }}</h2>
+                            <h3>{{ document.author }} {{ document.published }}</h3>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
+            {% endfor %}
+        {% endif %}
     {% endfor %}
 {% endblock %}
 

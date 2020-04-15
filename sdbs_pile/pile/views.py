@@ -78,10 +78,14 @@ class TagView(BasePileView):
             except ObjectDoesNotExist:
                 raise Http404
 
+        status_documents = {s: [] for s in Document.DocumentStatus}
+        for document in documents:
+            status_documents[document.status] += [document]
+
         return {
             'tag': tag if tag != "UNTAGGED" else None,
             'untagged': tag == "UNTAGGED",
-            'documents': documents,
+            'status_documents': status_documents,
             **base_context_data
         }
 
