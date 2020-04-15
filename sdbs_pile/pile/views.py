@@ -22,7 +22,7 @@ from sdbs_pile.pile.models import Tag, Document
 class BasePileViewMixin(View):
     @property
     def include_hidden(self):
-        return self.request.user.has_perm('document.see_hidden')
+        return self.request.user.has_perm('pile.see_hidden')
 
     @property
     def documents(self):
