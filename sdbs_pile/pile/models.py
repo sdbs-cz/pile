@@ -11,18 +11,11 @@ class Tag(SoftDeletableModel):
     name = models.CharField(max_length=128, null=False, blank=False)
     description = models.TextField(null=False, blank=True)
 
-    @property
-    def documents_exclude_hidden(self):
-        return Document.objects.exclude_hidden().filter(tags__in=[self])
-
     def __str__(self):
         return self.name
 
 
 class DocumentQuerySet(QuerySet):
-    def exclude_hidden(self):
-        return super().filter(public=True)
-
     def untagged(self):
         return super().annotate(tag_count=Count('tags')).filter(tag_count=0)
 

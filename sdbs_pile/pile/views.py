@@ -8,7 +8,7 @@ from random import choice
 import weasyprint
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from django.contrib.syndication.views import Feed
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import Http404, FileResponse, HttpRequest
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -19,27 +19,18 @@ from django.views.generic import TemplateView
 from sdbs_pile.pile.models import Tag, Document
 
 
-class BasePileViewMixin(View):
-    @property
-    def include_hidden(self):
-        return self.request.user.has_perm('pile.see_hidden')
-
-    @property
-    def documents(self):
-        return Document.objects if self.include_hidden else Document.objects.exclude_hidden()
-
-
-class BasePileView(BasePileViewMixin, TemplateView):
+class BasePileView(TemplateView):
     def get_context_data(self, **kwargs):
         tags = list(Tag.objects.all())
         tags.sort(key=lambda tag: tag.name)
-        tags = [(tag, (tag.documents if self.include_hidden else tag.documents_exclude_hidden).count()) for tag in tags]
+        tags = [(tag, tag.documents.count()) for tag in tags]
         tags.sort(key=itemgetter(1), reverse=True)
 
         return {
             'tags': tags,
-            'document_count': self.documents.count(),
-            'untagged_count': self.documents.untagged().count()
+            'document_count': Document.objects.count(),
+            'untagged_count': Document.objects.untagged().count(),
+            'can_see_hidden': self.request.user.has_perm('pile.see_hidden')
         }
 
 
@@ -50,8 +41,8 @@ class IndexView(BasePileView):
         base_context_data = super(IndexView, self).get_context_data(**kwargs)
 
         return {
-            'recent_documents': self.documents.order_by('-uploaded')[:5],
-            'random_document': choice(self.documents.all()[5:]) if self.documents.count() > 0 else None,
+            'recent_documents': Document.objects.order_by('-uploaded')[:5],
+            'random_document': choice(Document.objects.all()[5:]) if Document.objects.count() > 0 else None,
             **base_context_data
         }
 
@@ -64,17 +55,17 @@ class TagView(BasePileView):
 
         if name_or_id == "*":
             tag = None
-            documents = self.documents.all()
+            documents = Document.objects.all()
         elif name_or_id == "_":
             tag = "UNTAGGED"
-            documents = self.documents.untagged()
+            documents = Document.objects.untagged()
         else:
             try:
                 try:
                     tag = Tag.objects.get(id=int(name_or_id))
                 except ValueError:
                     tag = Tag.objects.get(name=name_or_id)
-                documents = tag.documents.all() if self.include_hidden else tag.documents_exclude_hidden
+                documents = tag.documents.all()
             except ObjectDoesNotExist:
                 raise Http404
 
@@ -97,7 +88,7 @@ class DocumentView(BasePileView):
         base_context_data = super(DocumentView, self).get_context_data()
 
         try:
-            document = self.documents.get(pk=document_id)
+            document = Document.objects.get(pk=document_id)
         except ObjectDoesNotExist:
             raise Http404
 
@@ -107,10 +98,10 @@ class DocumentView(BasePileView):
         }
 
 
-class LabelView(BasePileViewMixin):
+class LabelView(View):
     def get(self, request: HttpRequest, document_id: int):
         try:
-            document = self.documents.get(pk=document_id)
+            document = Document.objects.get(pk=document_id)
         except ObjectDoesNotExist:
             raise Http404
 
@@ -129,12 +120,15 @@ class LabelView(BasePileViewMixin):
         return stream
 
 
-class DocumentWithLabelView(BasePileViewMixin):
+class DocumentWithLabelView(View):
     def get(self, request: HttpRequest, document_id: int):
         try:
-            document = self.documents.get(pk=document_id)
+            document = Document.objects.get(pk=document_id)
         except ObjectDoesNotExist:
             raise Http404
+
+        if not self.request.user.has_perm('pile.see_hidden') and not document.public:
+            raise PermissionDenied()
 
         if document.is_local_pdf:
             try:

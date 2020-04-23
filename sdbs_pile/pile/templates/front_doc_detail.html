@@ -36,22 +36,29 @@
             </div>
         {% endif %}
 
-        {% if document.is_local_pdf %}
-            <div class="doc-link">
-                <span class="doc-link-intro">Access file as:</span>
-                <a href="{% url "pile:retrieve" document.id %}">Entry #{{ document.id }} of /-\ pile</a>
-            </div>
+        {% if document.public or can_see_hidden %}
+            {% if document.is_local_pdf %}
+                <div class="doc-link">
+                    <span class="doc-link-intro">Access file as:</span>
+                    <a href="{% url "pile:retrieve" document.id %}">Entry #{{ document.id }} of /-\ pile</a>
+                </div>
 
-            <div class="doc-link">
-                <span class="doc-link-intro">Get original document at: </span>
-                <a href="{{ document.url }}">{{ document.url }}</a>
-            </div>
+                <div class="doc-link">
+                    <span class="doc-link-intro">Get original document at: </span>
+                    <a href="{{ document.url }}">{{ document.url }}</a>
+                </div>
+            {% else %}
+                <div class="doc-link">
+                    <span class="doc-link-intro">Access file at:</span>
+                    <a href="{{ document.url }}">{{ document.url }}</a>
+                </div>
+
+                <div class="doc-link">
+                    <span class="doc-link-intro">Get label for file at:</span>
+                    <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
+                </div>
+            {% endif %}
         {% else %}
-            <div class="doc-link">
-                <span class="doc-link-intro">Access file at:</span>
-                <a href="{{ document.url }}">{{ document.url }}</a>
-            </div>
-
             <div class="doc-link">
                 <span class="doc-link-intro">Get label for file at:</span>
                 <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
