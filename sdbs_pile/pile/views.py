@@ -29,7 +29,7 @@ class BasePileView(TemplateView):
         return {
             'tags': tags,
             'document_count': Document.objects.count(),
-            'untagged_count': Document.objects.untagged().count(),
+            'untagged_count': Document.objects.all().untagged().count(),
             'can_see_hidden': self.request.user.has_perm('pile.see_hidden')
         }
 
@@ -58,7 +58,7 @@ class TagView(BasePileView):
             documents = Document.objects.all()
         elif name_or_id == "_":
             tag = "UNTAGGED"
-            documents = Document.objects.untagged()
+            documents = Document.objects.all().untagged()
         else:
             try:
                 try:
