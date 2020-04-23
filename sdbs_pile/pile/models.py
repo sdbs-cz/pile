@@ -3,7 +3,8 @@ import markdown2
 from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.db import models
-from django.db.models import Count, Q, QuerySet
+from django.db.models import Count, Q
+from model_utils.managers import SoftDeletableManager, SoftDeletableQuerySet
 from model_utils.models import SoftDeletableModel
 
 
@@ -15,7 +16,7 @@ class Tag(SoftDeletableModel):
         return self.name
 
 
-class DocumentQuerySet(QuerySet):
+class DocumentQuerySet(SoftDeletableQuerySet):
     def untagged(self):
         return super().annotate(tag_count=Count('tags')).filter(tag_count=0)
 
@@ -24,6 +25,10 @@ class DocumentQuerySet(QuerySet):
 
     def external(self):
         return super().filter((Q(file__isnull=True) | Q(file='')) & ~Q(external_url__contains="pile.sdbs.cz"))
+
+
+class DocumentManager(SoftDeletableManager):
+    _queryset_class = DocumentQuerySet
 
 
 class Document(SoftDeletableModel):
@@ -44,7 +49,7 @@ class Document(SoftDeletableModel):
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
 
-    objects = DocumentQuerySet.as_manager()
+    objects = DocumentManager()
 
     @property
     def html_description(self):
