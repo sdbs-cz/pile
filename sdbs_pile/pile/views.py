@@ -165,7 +165,7 @@ class RecentlyUploadedFeed(Feed):
         return item.title
 
     def item_description(self, item: Document):
-        return item.description
+        return item.html_description
 
     def item_pubdate(self, item: Document):
         return item.uploaded or datetime.now()
