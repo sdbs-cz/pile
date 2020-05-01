@@ -41,7 +41,7 @@ class IndexView(BasePileView):
         base_context_data = super(IndexView, self).get_context_data(**kwargs)
 
         return {
-            'recent_documents': Document.objects.order_by('-uploaded')[:5],
+            'recent_documents': Document.objects.order_by('-uploaded')[:10],
             'random_document': choice(Document.objects.all()[5:]) if Document.objects.count() > 0 else None,
             **base_context_data
         }
