@@ -33,8 +33,8 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('is_removed',)
-    list_display = ('title', 'author', 'published', 'status', 'has_file', 'public', 'filed_under')
-    list_filter = ('tags', 'status', DocumentExternalListFilter, 'public')
+    list_display = ('title', 'author', 'published', 'media_type', 'status', 'has_file', 'public', 'filed_under')
+    list_filter = ('tags', 'media_type', 'status', DocumentExternalListFilter, 'public')
     search_fields = ('title', 'author', 'published')
     actions = ('make_published', 'make_hidden')
 

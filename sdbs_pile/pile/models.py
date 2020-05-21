@@ -37,6 +37,13 @@ class Document(SoftDeletableModel):
         STANDARD = "STD", "Standard"
         FRAGMENT = "FRG", "Fragment"
 
+    class DocumentType(models.TextChoices):
+        TEXT = "T", "Text"
+        AUDIO = "A", "Audio"
+        VIDEO = "V", "Video"
+        MULTI = "+", "Multiple types"
+        OTHER = "X", "Other"
+
     title = models.CharField(max_length=512, null=False, blank=False)
     author = models.CharField(max_length=512, null=False, blank=True)
     published = models.CharField(max_length=128, null=False, blank=True)
@@ -44,6 +51,8 @@ class Document(SoftDeletableModel):
     external_url = models.URLField(null=True, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
     public = models.BooleanField(default=True, null=False, blank=False)
+    media_type = models.CharField(null=False, blank=False,
+                                  max_length=1, choices=DocumentType.choices, default=DocumentType.TEXT)
     status = models.CharField(null=False, blank=False,
                               max_length=3, choices=DocumentStatus.choices, default=DocumentStatus.STANDARD)
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
