@@ -207,7 +207,6 @@ ul > li:before {
 
     #content {
         margin: 2rem 2rem 0 18rem;
-        padding: 0 0 2rem 0;
     }
 }
 
@@ -260,9 +259,8 @@ ul > li:before {
 }
 
 #login {
-    position: absolute;
-    bottom: 0;
-    right: 2rem;
+    float: right;
+    padding: 1rem 2rem 2rem 2rem;
 }
 
 #login a {
