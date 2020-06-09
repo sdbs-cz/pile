@@ -17,12 +17,12 @@
                 <a href="{% url 'pile:document' random_document.id %}">
                     <span>#{{ random_document.id }}: {{ random_document.title }}</span>
 
-                    <div class="index-listing-desc">
+                    <div class="short-doc-desc">
                         {% if random_document.tags.count > 0 %}
                             <div class="random-tags">Filed under: {{ random_document.tags.all | join:" / " }}</div>
                         {% endif %}
                     </div>
-                    <div class="index-listing-desc">
+                    <div class="short-doc-desc">
                         {{ random_document.plain_description }}
                     </div>
                 </a>
@@ -41,7 +41,7 @@
                         {% endif %}
                         {{ document.title }}
 
-                        <div class="index-listing-desc">
+                        <div class="short-doc-desc">
                             {{ document.plain_description }}
                         </div>
                     </a>

@@ -57,6 +57,7 @@ class Document(SoftDeletableModel):
                               max_length=3, choices=DocumentStatus.choices, default=DocumentStatus.STANDARD)
     tags = models.ManyToManyField(Tag, related_name="documents", blank=True)
     uploaded = models.DateTimeField(auto_now_add=True, null=True)
+    related = models.ManyToManyField('self', related_name='related')
 
     objects = DocumentManager()
 

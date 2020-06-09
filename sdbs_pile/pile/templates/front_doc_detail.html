@@ -64,6 +64,26 @@
                 <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
             </div>
         {% endif %}
+        {% if document.related.exists %}
+            <hr>
+            <h2>Related documents</h2>
+            <ul>
+                {% for related in document.related.all %}
+                    <li>
+                        <a href="{% url 'pile:document' related.id %}">
+                            {% if related.uploaded %}
+                                <em>({{ related.uploaded|date:"Y/m/d G:i:s" }})</em>
+                            {% endif %}
+                            {{ related.title }}
+
+                            <div class="short-doc-desc">
+                                {{ related.plain_description }}
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 {% endblock %}
 

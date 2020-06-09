@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from sdbs_pile.pile.models import Tag, Document
@@ -31,12 +32,25 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
             return queryset
 
 
+class DocumentAdminForm(forms.ModelForm):
+    related = forms.ModelMultipleChoiceField(queryset=Document.objects.none())
+
+    class Meta:
+        model = Document
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['related'].queryset = Document.objects.exclude(pk=self.instance.pk)
+
+
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('is_removed',)
     list_display = ('title', 'author', 'published', 'media_type', 'status', 'has_file', 'public', 'filed_under')
     list_filter = ('tags', 'media_type', 'status', DocumentExternalListFilter, 'public')
     search_fields = ('title', 'author', 'published')
     actions = ('make_published', 'make_hidden')
+    form = DocumentAdminForm
 
     def has_file(self, document: Document):
         return document.file is not None and str(document.file).strip() != ''

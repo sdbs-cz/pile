@@ -220,7 +220,7 @@ ul > li:before {
     margin-bottom: .5em;
 }
 
-.index-listing-desc {
+.short-doc-desc {
     font-size: 12pt;
     color: #bfbfbf;
     padding-left: calc(20px + .5rem);
@@ -231,7 +231,7 @@ ul > li:before {
     text-overflow: ellipsis;
 }
 
-.index-listing-desc p {
+.short-doc-desc p {
     margin-top: 0;
 }
 
