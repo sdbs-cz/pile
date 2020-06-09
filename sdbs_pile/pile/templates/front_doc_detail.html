@@ -14,6 +14,8 @@
             <h3>Published: {{ document.published }}</h3>
         {% endif %}
 
+        <h3>Type: {{ document.get_media_type_display }}</h3>
+
         {% if document.tags.count > 0 %}
             <h3 class="doc-taglist">
                 <span>Tags:</span>
