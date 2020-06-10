@@ -33,7 +33,7 @@ class DocumentExternalListFilter(admin.SimpleListFilter):
 
 
 class DocumentAdminForm(forms.ModelForm):
-    related = forms.ModelMultipleChoiceField(queryset=Document.objects.none())
+    related = forms.ModelMultipleChoiceField(queryset=Document.objects.none(), required=False)
 
     class Meta:
         model = Document
