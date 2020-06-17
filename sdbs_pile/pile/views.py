@@ -1,6 +1,7 @@
 # Create your views here.
 import io
 import logging
+import re
 from datetime import datetime
 from operator import itemgetter
 from random import choice
@@ -9,7 +10,7 @@ import weasyprint
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.http import Http404, FileResponse, HttpRequest
+from django.http import Http404, FileResponse, HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.text import slugify
@@ -169,3 +170,9 @@ class RecentlyUploadedFeed(Feed):
 
     def item_pubdate(self, item: Document):
         return item.uploaded or datetime.now()
+
+
+def IPFSView(request: HttpRequest):
+    ipfs_matches = [re.search(r'Qm[\w]{44}', doc.url) for doc in Document.objects.all() if 'ipfs' in doc.url]
+    ipfs_cids = [match.group(0) for match in ipfs_matches if match]
+    return HttpResponse("\n".join(ipfs_cids), content_type='text/plain')
