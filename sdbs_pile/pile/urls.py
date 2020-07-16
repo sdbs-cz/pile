@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import IPFSView
+from .views import IPFSView, ExternalLinkView
 
 app_name = 'pile'
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path('label/<int:document_id>', views.LabelView.as_view(), name='label'),
     path('retrieve/<int:document_id>', views.DocumentWithLabelView.as_view(), name='retrieve'),
     path('feed', views.RecentlyUploadedFeed()),
+    path('api/external_links', ExternalLinkView),
     path('api/ipfs_cids', IPFSView)
 ]

@@ -172,6 +172,12 @@ class RecentlyUploadedFeed(Feed):
         return item.uploaded or datetime.now()
 
 
+def ExternalLinkView(request: HttpRequest):
+    external_links = Document.objects.all().external().values_list("external_url", flat=True)
+    external_links = [link for link in external_links if "pile.sdbs.cz" not in link]
+    return HttpResponse("\n".join(external_links), content_type='text/plain')
+
+
 def IPFSView(request: HttpRequest):
     ipfs_matches = [re.search(r'Qm[\w]{44}', doc.url) for doc in Document.objects.all() if 'ipfs' in doc.url]
     ipfs_cids = [match.group(0) for match in ipfs_matches if match]
