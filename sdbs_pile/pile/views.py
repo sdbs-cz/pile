@@ -179,6 +179,7 @@ def ExternalLinkView(request: HttpRequest):
 
 
 def IPFSView(request: HttpRequest):
-    ipfs_matches = [re.search(r'Qm[\w]{44}', doc.url) for doc in Document.objects.all() if 'ipfs' in doc.url]
+    ipfs_matches = [re.search(r'Qm[\w]{44}', link.url)
+                    for link in DocumentLink.objects.order_by('order', '-document_id') if 'ipfs' in link.url]
     ipfs_cids = [match.group(0) for match in ipfs_matches if match]
     return HttpResponse("\n".join(ipfs_cids), content_type='text/plain')
