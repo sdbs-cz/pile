@@ -2,6 +2,7 @@ db.sqlite3
 docs
 /static
 dev
+/static_pile
 
 *.ttf
 *.woff

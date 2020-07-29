@@ -28,6 +28,8 @@ else:
     DEBUG = False
     ALLOWED_HOSTS = ["pile.sdbs.cz"]
 
+STATIC_PILE = bool(os.getenv("STATIC"))
+
 # Application definition
 
 INSTALLED_APPS = [

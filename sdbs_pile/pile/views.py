@@ -17,6 +17,7 @@ from django.utils.text import slugify
 from django.views import View
 from django.views.generic import TemplateView
 
+from sdbs_pile import settings
 from sdbs_pile.pile.models import Tag, Document, DocumentLink
 
 
@@ -31,7 +32,8 @@ class BasePileView(TemplateView):
             'tags': tags,
             'document_count': Document.objects.count(),
             'untagged_count': Document.objects.all().untagged().count(),
-            'can_see_hidden': self.request.user.has_perm('pile.see_hidden')
+            'can_see_hidden': settings.STATIC_PILE or self.request.user.has_perm('pile.see_hidden'),
+            'STATIC_PILE': settings.STATIC_PILE
         }
 
 
@@ -43,7 +45,8 @@ class IndexView(BasePileView):
 
         return {
             'recent_documents': Document.objects.order_by('-uploaded')[:10],
-            'random_document': choice(Document.objects.all()[5:]) if Document.objects.count() > 0 else None,
+            'random_document': choice(Document.objects.all()[5:]) \
+                if not settings.STATIC_PILE and Document.objects.count() > 0 else None,
             **base_context_data
         }
 
@@ -128,7 +131,7 @@ class DocumentWithLabelView(View):
         except ObjectDoesNotExist:
             raise Http404
 
-        if not self.request.user.has_perm('pile.see_hidden') and not document.public:
+        if not self.request.user.has_perm('pile.see_hidden') and not document.public and not settings.STATIC_PILE:
             raise PermissionDenied()
 
         if document.is_local_pdf:
