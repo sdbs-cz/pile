@@ -73,7 +73,7 @@ class Document(SoftDeletableModel):
     def url(self):
         if self.file:
             return f"/docs/{self.file.url}"
-        return self.urls.first()
+        return self.urls.first().url if self.urls.exists() else None
 
     @property
     def is_local_pdf(self):
