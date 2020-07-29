@@ -63,7 +63,7 @@ class Document(SoftDeletableModel):
 
     @property
     def html_description(self):
-        return markdown2.markdown(self.description)
+        return bleach.linkify(markdown2.markdown(self.description))
 
     @property
     def plain_description(self):

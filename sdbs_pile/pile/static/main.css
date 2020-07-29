@@ -193,7 +193,7 @@ ul > li:before {
     content: "➜ ";
 }
 
-.doc-link a {
+.document a {
     text-decoration: underline;
 }
 
