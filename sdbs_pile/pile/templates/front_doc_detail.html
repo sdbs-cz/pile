@@ -49,7 +49,7 @@
                     <div class="doc-link-intro">Also see:</div>
                     {% for link in document.urls.all|slice:"1:" %}
                         <div class="doc-link doc-link-plus">
-                            <a href="{{ link.description|default:link.url }}">{{ link.url }}</a>
+                            <a href="{{ link.url }}">{{ link.description|default:link.url }}</a>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -68,7 +68,7 @@
                     <div class="doc-link-intro">Also at:</div>
                     {% for link in document.urls.all|slice:"1:" %}
                         <div class="doc-link doc-link-plus">
-                            <a href="{{ link.description|default:link.url }}">{{ link.url }}</a>
+                            <a href="{{ link.url }}">{{ link.description|default:link.url }}</a>
                         </div>
                     {% endfor %}
                 {% endif %}
