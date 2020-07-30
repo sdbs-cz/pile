@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sdbs_pile.pile'
+    'sdbs_pile.pile',
+    'ordered_model'
 ]
 
 MIDDLEWARE = [

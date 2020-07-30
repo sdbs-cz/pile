@@ -189,12 +189,16 @@ ul > li:before {
     margin: .5em 0 0 0;
 }
 
-.doc-link-intro:before {
+.doc-link-intro:before, .doc-link-plus:before {
     content: "➜ ";
 }
 
 .doc-link a {
     text-decoration: underline;
+}
+
+.doc-link-plus {
+    margin-left: 1em;
 }
 
 @media screen and (min-width: 64em ) {

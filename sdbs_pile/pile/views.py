@@ -17,7 +17,7 @@ from django.utils.text import slugify
 from django.views import View
 from django.views.generic import TemplateView
 
-from sdbs_pile.pile.models import Tag, Document
+from sdbs_pile.pile.models import Tag, Document, DocumentLink
 
 
 class BasePileView(TemplateView):
@@ -173,7 +173,7 @@ class RecentlyUploadedFeed(Feed):
 
 
 def ExternalLinkView(request: HttpRequest):
-    external_links = Document.objects.all().external().values_list("external_url", flat=True)
+    external_links = DocumentLink.objects.order_by('order', '-document_id').values_list("url", flat=True)
     external_links = [link for link in external_links if "pile.sdbs.cz" not in link]
     return HttpResponse("\n".join(external_links), content_type='text/plain')
 

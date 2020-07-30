@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.forms import BaseInlineFormSet
+from ordered_model.admin import OrderedInlineModelAdminMixin, OrderedTabularInline
 
-from sdbs_pile.pile.models import Tag, Document
+from sdbs_pile.pile.models import Tag, Document, DocumentLink
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -11,6 +14,23 @@ class TagAdmin(admin.ModelAdmin):
     @staticmethod
     def document_count(tag: Tag):
         return tag.documents.count()
+
+
+class DocumentLinkFormset(BaseInlineFormSet):
+    def clean(self):
+        super(DocumentLinkFormset, self).clean()
+        has_url = any((form.cleaned_data.get('url') and not form.cleaned_data['DELETE']) for form in self.forms)
+        if not (self.instance.file or has_url):
+            raise ValidationError("An uploaded document or at least one external URL is required.")
+
+
+class DocumentLinkAdmin(OrderedTabularInline):
+    model = DocumentLink
+    formset = DocumentLinkFormset
+    fields = ('description', 'url', 'move_up_down_links')
+    readonly_fields = ('move_up_down_links',)
+    extra = 1
+    ordering = ('order',)
 
 
 class DocumentExternalListFilter(admin.SimpleListFilter):
@@ -44,13 +64,14 @@ class DocumentAdminForm(forms.ModelForm):
         self.fields['related'].queryset = Document.objects.exclude(pk=self.instance.pk)
 
 
-class DocumentAdmin(admin.ModelAdmin):
+class DocumentAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     exclude = ('is_removed',)
     list_display = ('title', 'author', 'published', 'media_type', 'status', 'has_file', 'public', 'filed_under')
     list_filter = ('tags', 'media_type', 'status', DocumentExternalListFilter, 'public')
     search_fields = ('title', 'author', 'published')
     actions = ('make_published', 'make_hidden')
     form = DocumentAdminForm
+    inlines = (DocumentLinkAdmin,)
 
     def has_file(self, document: Document):
         return document.file is not None and str(document.file).strip() != ''

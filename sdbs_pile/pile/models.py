@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Count, Q
 from model_utils.managers import SoftDeletableManager, SoftDeletableQuerySet
 from model_utils.models import SoftDeletableModel
+from ordered_model.models import OrderedModel
 
 
 class Tag(SoftDeletableModel):
@@ -21,10 +22,10 @@ class DocumentQuerySet(SoftDeletableQuerySet):
         return super().annotate(tag_count=Count('tags')).filter(tag_count=0)
 
     def local(self):
-        return super().filter((Q(file__isnull=False) & ~Q(file='')) | Q(external_url__contains="pile.sdbs.cz"))
+        return super().filter((Q(file__isnull=False) & ~Q(file='')) | Q(urls__url__contains="pile.sdbs.cz"))
 
     def external(self):
-        return super().filter((Q(file__isnull=True) | Q(file='')) & ~Q(external_url__contains="pile.sdbs.cz"))
+        return super().filter((Q(file__isnull=True) | Q(file='')) & ~Q(urls__url__contains="pile.sdbs.cz"))
 
 
 class DocumentManager(SoftDeletableManager):
@@ -48,7 +49,6 @@ class Document(SoftDeletableModel):
     author = models.CharField(max_length=512, null=False, blank=True)
     published = models.CharField(max_length=128, null=False, blank=True)
     description = models.TextField(max_length=2048, null=False, blank=True)
-    external_url = models.URLField(null=True, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
     public = models.BooleanField(default=True, null=False, blank=False)
     media_type = models.CharField(null=False, blank=False,
@@ -73,7 +73,7 @@ class Document(SoftDeletableModel):
     def url(self):
         if self.file:
             return f"/docs/{self.file.url}"
-        return self.external_url
+        return self.urls.first()
 
     @property
     def is_local_pdf(self):
@@ -89,9 +89,19 @@ class Document(SoftDeletableModel):
         from django.urls import reverse
         return reverse('pile:document', args=[str(self.id)])
 
-    def clean(self):
-        if not (self.file or self.external_url):
-            raise ValidationError("An uploaded document or an external URL is required.")
-
     def __str__(self):
         return f"{self.title}{f' ({self.author})' if self.author else ''}"
+
+
+class DocumentLink(OrderedModel):
+    document = models.ForeignKey(Document, related_name="urls", on_delete=models.CASCADE)
+    url = models.URLField(null=False, blank=False)
+    description = models.CharField(max_length=512, null=True, blank=True)
+
+    order_with_respect_to = 'document'
+
+    class Meta(OrderedModel.Meta):
+        pass
+
+    def __str__(self):
+        return f"{self.description} - {self.url}" if self.description else self.url

@@ -156,6 +156,14 @@ version = "4.0.0"
 Django = ">=2.0.1"
 
 [[package]]
+category = "main"
+description = "Allows Django models to be ordered and provides a simple admin interface for reordering them."
+name = "django-ordered-model"
+optional = false
+python-versions = "*"
+version = "3.4.1"
+
+[[package]]
 category = "dev"
 description = "WSGI HTTP Server for UNIX"
 name = "gunicorn"
@@ -440,7 +448,7 @@ python-versions = "*"
 version = "0.5.1"
 
 [metadata]
-content-hash = "aedaaacc2c26bf3618b35cd6ed67cbe4309526e18bb696cb37f81398e7cf9337"
+content-hash = "c4c5d2ad677b97810bb47fc430207910d648ddc8ebc22de10715c58d8bb36f32"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -520,6 +528,10 @@ django = [
 django-model-utils = [
     {file = "django-model-utils-4.0.0.tar.gz", hash = "sha256:adf09e5be15122a7f4e372cb5a6dd512bbf8d78a23a90770ad0983ee9d909061"},
     {file = "django_model_utils-4.0.0-py2.py3-none-any.whl", hash = "sha256:9cf882e5b604421b62dbe57ad2b18464dc9c8f963fc3f9831badccae66c1139c"},
+]
+django-ordered-model = [
+    {file = "django-ordered-model-3.4.1.tar.gz", hash = "sha256:d867166ed4dd12501139e119cbbc5b4d19798a3e72740aef0af4879ba97102cf"},
+    {file = "django_ordered_model-3.4.1-py3-none-any.whl", hash = "sha256:29af6624cf3505daaf0df00e2df1d0726dd777b95e08f304d5ad0264092aa934"},
 ]
 gunicorn = [
     {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},
