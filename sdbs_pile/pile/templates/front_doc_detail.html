@@ -108,8 +108,7 @@
 {% endblock %}
 
 {% block meta-og %}
-    <title>The /-\ pile: {{ document.title }}</title>
-    <meta property="og:title" content="The /-\ Pile: {{ document.title }}"/>
+    <meta property="og:title" content="{{ document.title }}"/>
     <meta property="og:url" content="{% url "pile:document" document.id %}"/>
     <meta property="og:description" content="{{ document.plain_description }}"/>
     <meta property="og:type" content="article"/>

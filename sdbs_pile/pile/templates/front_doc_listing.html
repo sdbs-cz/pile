@@ -1,7 +1,6 @@
 {% extends "front_base.html" %}
 
 {% block title %}{% spaceless %}
-
     {% if tag %}
         : Filed under "{{ tag.name }}"
     {% elif untagged %}
@@ -41,7 +40,7 @@
 
 {% block meta-og %}
     {% if tag %}
-        <meta property="og:title" content="The /-\ Pile: Documents under &quot;{{ tag.name }}&quot;"/>
+        <meta property="og:title" content="Documents under &quot;{{ tag.name }}&quot;"/>
         <meta property="og:url" content="{% url "pile:tag" tag.id %}"/>
         <meta property="og:description" content="{{ tag.description }}"/>
         <meta property="og:type" content="website"/>
