@@ -14,7 +14,7 @@
     {% if tag %}
         <div class="text tag-text">
             <h1>{{ tag.name }}</h1>
-            <p class="tag-desc">{{ tag.description }}</p>
+            <div class="tag-desc">{{ tag.html_description|safe }}</div>
         </div>
     {% endif %}
 

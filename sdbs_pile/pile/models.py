@@ -1,6 +1,5 @@
 import bleach
 import markdown2
-from django.core.exceptions import ValidationError
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db.models import Count, Q
@@ -8,10 +7,20 @@ from model_utils.managers import SoftDeletableManager, SoftDeletableQuerySet
 from model_utils.models import SoftDeletableModel
 from ordered_model.models import OrderedModel
 
+BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + ['p', 'br', 'h1', 'h2', 'h3']
+
 
 class Tag(SoftDeletableModel):
     name = models.CharField(max_length=128, null=False, blank=False)
     description = models.TextField(null=False, blank=True)
+
+    @property
+    def html_description(self):
+        return bleach.clean(bleach.linkify(markdown2.markdown(self.description)), tags=BLEACH_ALLOWED_TAGS)
+
+    @property
+    def plain_description(self):
+        return bleach.clean(self.html_description, tags=[], strip=True)
 
     def __str__(self):
         return self.name
@@ -63,7 +72,7 @@ class Document(SoftDeletableModel):
 
     @property
     def html_description(self):
-        return bleach.linkify(markdown2.markdown(self.description))
+        return bleach.clean(bleach.linkify(markdown2.markdown(self.description)), tags=BLEACH_ALLOWED_TAGS)
 
     @property
     def plain_description(self):
