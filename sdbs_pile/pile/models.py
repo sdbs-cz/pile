@@ -7,7 +7,7 @@ from model_utils.managers import SoftDeletableManager, SoftDeletableQuerySet
 from model_utils.models import SoftDeletableModel
 from ordered_model.models import OrderedModel
 
-BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + ['p', 'br', 'h1', 'h2', 'h3']
+BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + ['p', 'br', 'h1', 'h2', 'h3', 'hr']
 
 
 class Tag(SoftDeletableModel):
