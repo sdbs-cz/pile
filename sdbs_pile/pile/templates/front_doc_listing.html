@@ -41,7 +41,7 @@
 {% block meta-og %}
     {% if tag %}
         <meta property="og:title" content="Documents under &quot;{{ tag.name }}&quot;"/>
-        <meta property="og:url" content="{% url "pile:tag" tag.id %}"/>
+        <meta property="og:url" content="https://pile.sdbs.cz{% url "pile:tag" tag.id %}"/>
         <meta property="og:description" content="{{ tag.description }}"/>
         <meta property="og:type" content="website"/>
     {% endif %}

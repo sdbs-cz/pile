@@ -3,22 +3,22 @@
 {% block title %}: {{ document.title }}{% endblock %}
 
 {% block content %}
-    <div class="text document">
-        <h1>{{ document.title }}</h1>
+    <div class="text document" vocab="https://schema.org/" typeof="CreativeWork" resource="{% url "pile:document" document.id %}">
+        <h1 property="name">{{ document.title }}</h1>
 
         {% if document.author %}
-            <h2>{{ document.author }}</h2>
+            <h2 property="author">{{ document.author }}</h2>
         {% endif %}
 
         {% if document.published %}
-            <h3>Published: {{ document.published }}</h3>
+            <h3>Published: <span property="datePublished">{{ document.published }}</span></h3>
         {% endif %}
 
         <h3>Type: {{ document.get_media_type_display }}</h3>
 
         {% if document.tags.count > 0 %}
             <h3 class="doc-taglist">
-                <span>Tags:</span>
+                <span>Tag</span>
                 {% for tag in document.tags.all %}
                     <li>
                         <a href="{% url "pile:tag" tag.id %}" title="{{ tag.description }}">
@@ -31,10 +31,10 @@
 
         {% if document.description %}
             <div class="doc-description">
-            <span class="doc-description-intro">
-                {% if document.url %}Description{% else %}Content{% endif %}:
-            </span>
-                <p> {{ document.html_description | safe }} </p>
+                <span class="doc-description-intro">
+                    {% if document.url %}Description{% else %}Content{% endif %}:
+                </span>
+                <div property="description"> {{ document.html_description | safe }} </div>
             </div>
         {% endif %}
 
@@ -42,7 +42,9 @@
             {% if document.is_local_pdf %}
                 <div class="doc-link">
                     <span class="doc-link-intro">Access file as:</span>
-                    <a href="{% url "pile:retrieve" document.id %}">Entry #{{ document.id }} of /-\ pile</a>
+                    <a property="url" href="{% url "pile:retrieve" document.id %}">
+                        Entry #{{ document.id }} of /-\ pile
+                    </a>
                 </div>
 
                 {% if document.urls.count > 1 %}
@@ -61,7 +63,7 @@
             {% else %}
                 <div class="doc-link">
                     <span class="doc-link-intro">Access file at:</span>
-                    <a href="{{ document.url }}">{{ document.url }}</a>
+                    <a property="url" href="{{ document.url }}">{{ document.url }}</a>
                 </div>
 
                 {% if document.urls.count > 1 %}
@@ -109,7 +111,7 @@
 
 {% block meta-og %}
     <meta property="og:title" content="{{ document.title }}"/>
-    <meta property="og:url" content="{% url "pile:document" document.id %}"/>
+    <meta property="og:url" content="https://pile.sdbs.cz{% url "pile:document" document.id %}"/>
     <meta property="og:description" content="{{ document.plain_description }}"/>
     <meta property="og:type" content="article"/>
 {% endblock %}
