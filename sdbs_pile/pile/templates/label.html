@@ -125,7 +125,7 @@
         {% if document.tags.count > 0 %}
             <div class="label-footer-tags">Filed under:
             {% for tag in document.tags.all %}
-                {{ tag.name }}
+                {{ tag.name }}{% if not forloop.last %} / {% endif %}
             {% endfor %}
         {% endif %}
         <div class="label-footer-url">
