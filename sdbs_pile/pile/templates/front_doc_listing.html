@@ -1,14 +1,16 @@
 {% extends "front_base.html" %}
 
-{% block title %}{% spaceless %}
+{% block title %}
+{% spaceless %}
     {% if tag %}
-        : Filed under "{{ tag.name }}"
+        | Filed under "{{ tag.name }}"
     {% elif untagged %}
-        : Untagged
+        | Untagged
     {% else %}
-        : All documents
+        | All documents
     {% endif %}
-{% endspaceless %}{% endblock %}
+{% endspaceless %}
+{% endblock %}
 
 {% block content %}
     {% if tag %}
