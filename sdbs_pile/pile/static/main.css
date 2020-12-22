@@ -230,7 +230,7 @@ ul > li:before {
     padding-left: calc(20px + .5rem);
 
     line-height: 13pt;
-    max-height: 26pt;
+    max-height: 28pt;
     overflow: hidden;
     text-overflow: ellipsis;
 }
