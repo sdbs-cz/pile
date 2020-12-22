@@ -47,6 +47,30 @@
                     </a>
                 </div>
 
+                <div class="doc-link">
+                    <span class="doc-link-intro">Get original document at: </span>
+                    <a href="{{ document.url }}">{{ document.url }}</a>
+                </div>
+
+                {% if document.urls.count > 0 %}
+                    <div class="doc-link-intro">Also see:</div>
+                    {% for link in document.urls.all %}
+                        <div class="doc-link doc-link-plus">
+                            <a href="{{ link.url }}">{{ link.description|default:link.url }}</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <div class="doc-link">
+                    <span class="doc-link-intro">Access file at:</span>
+                    <a property="url" href="{{ document.url }}">{{ document.url }}</a>
+                </div>
+
+                <div class="doc-link">
+                    <span class="doc-link-intro">Get label for file at:</span>
+                    <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
+                </div>
+                
                 {% if document.urls.count > 1 %}
                     <div class="doc-link-intro">Also see:</div>
                     {% for link in document.urls.all|slice:"1:" %}
@@ -55,36 +79,21 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-
-                <div class="doc-link">
-                    <span class="doc-link-intro">Get original document at: </span>
-                    <a href="{{ document.url }}">{{ document.url }}</a>
-                </div>
-            {% else %}
-                <div class="doc-link">
-                    <span class="doc-link-intro">Access file at:</span>
-                    <a property="url" href="{{ document.url }}">{{ document.url }}</a>
-                </div>
-
-                {% if document.urls.count > 1 %}
-                    <div class="doc-link-intro">Also at:</div>
-                    {% for link in document.urls.all|slice:"1:" %}
-                        <div class="doc-link doc-link-plus">
-                            <a href="{{ link.url }}">{{ link.description|default:link.url }}</a>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <div class="doc-link">
-                    <span class="doc-link-intro">Get label for file at:</span>
-                    <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
-                </div>
             {% endif %}
         {% else %}
             <div class="doc-link">
                 <span class="doc-link-intro">Get label for file at:</span>
                 <a href="{% url "pile:label" document.id %}">{% url "pile:label" document.id %}</a>
             </div>
+
+            {% if document.urls.count > 0 %}
+                <div class="doc-link-intro">Related URLs:</div>
+                {% for link in document.urls.all %}
+                    <div class="doc-link doc-link-plus">
+                        <a href="{{ link.url }}">{{ link.description|default:link.url }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         {% endif %}
         {% if document.related.exists %}
             <hr>
