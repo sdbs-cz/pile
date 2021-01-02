@@ -6,6 +6,7 @@ from django.db.models import Count, Q
 from model_utils.managers import SoftDeletableManager, SoftDeletableQuerySet
 from model_utils.models import SoftDeletableModel
 from ordered_model.models import OrderedModel
+from pdf2image import convert_from_path
 
 BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + ['p', 'br', 'h1', 'h2', 'h3', 'hr']
 
@@ -59,6 +60,7 @@ class Document(SoftDeletableModel):
     published = models.CharField(max_length=128, null=False, blank=True)
     description = models.TextField(max_length=2048, null=False, blank=True)
     file = models.FileField(null=True, blank=True, storage=FileSystemStorage(location='docs'))
+    image = models.ImageField(null=True, blank=True, storage=FileSystemStorage(location='docs/images'))
     public = models.BooleanField(default=True, null=False, blank=False)
     media_type = models.CharField(null=False, blank=False,
                                   max_length=1, choices=DocumentType.choices, default=DocumentType.TEXT)
@@ -87,6 +89,13 @@ class Document(SoftDeletableModel):
     @property
     def is_local_pdf(self):
         return self.file.name is not None and self.file.name.endswith(".pdf")
+
+    @property
+    def image_first_page(self):
+        if self.is_local_pdf:
+            images = convert_from_path(self.file.path, last_page=1)
+            if images:
+                return images[0]
 
     class Meta:
         ordering = ['-id']

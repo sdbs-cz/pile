@@ -46,5 +46,6 @@
         <meta property="og:url" content="https://pile.sdbs.cz{% url "pile:tag" tag.id %}"/>
         <meta property="og:description" content="{{ tag.description }}"/>
         <meta property="og:type" content="website"/>
+        <meta property="og:image" content="{% static "favicon.png" %}"/>
     {% endif %}
 {% endblock %}

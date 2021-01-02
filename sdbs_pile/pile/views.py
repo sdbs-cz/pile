@@ -7,7 +7,9 @@ from operator import itemgetter
 from random import choice
 
 import weasyprint
+from PIL import Image
 from PyPDF2 import PdfFileWriter, PdfFileReader
+from django.contrib.staticfiles import finders
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import Http404, FileResponse, HttpRequest, HttpResponse
@@ -155,6 +157,31 @@ class DocumentWithLabelView(View):
                 logging.exception(exc)
 
         return redirect(document.url)
+
+
+class BrandedImageView(View):
+    def get(self, request: HttpRequest, document_id: int):
+        try:
+            document = Document.objects.get(pk=document_id)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        margin = 32
+        pile_image = Image.open(finders.find('pile_300dpi.png')).resize((256 - margin, 256 - margin))
+        image = Image.open(document.image) if document.image else document.image_first_page
+        image.thumbnail((256, 256))
+
+        result = Image.new('RGBA', (256, 256), (0, 0, 0, 0))
+        result.paste(image, ((256 - image.size[0]) // 2, (256 - image.size[1]) // 2))
+        result.paste(pile_image, (margin//2, margin//2), pile_image)
+
+        result = result.crop(result.getbbox())
+
+        img_byte_arr = io.BytesIO()
+        result.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+
+        return HttpResponse(img_byte_arr, content_type="image/png")
 
 
 class RecentlyUploadedFeed(Feed):

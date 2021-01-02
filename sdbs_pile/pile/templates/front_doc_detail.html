@@ -123,4 +123,5 @@
     <meta property="og:url" content="https://pile.sdbs.cz{% url "pile:document" document.id %}"/>
     <meta property="og:description" content="{{ document.plain_description }}"/>
     <meta property="og:type" content="article"/>
+    <meta property="og:image" content="{% url "pile:image" document.id %}"/>
 {% endblock %}
