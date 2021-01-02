@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from . import views
 from .views import IPFSView, ExternalLinkView
@@ -10,7 +11,7 @@ urlpatterns = [
     path('item/<int:document_id>', views.DocumentView.as_view(), name='document'),
     path('label/<int:document_id>', views.LabelView.as_view(), name='label'),
     path('retrieve/<int:document_id>', views.DocumentWithLabelView.as_view(), name='retrieve'),
-    path('image/<int:document_id>', views.BrandedImageView.as_view(), name='image'),
+    path('image/<int:document_id>', cache_page(60 * 60 * 6)(views.BrandedImageView.as_view()), name='image'),
     path('feed', views.RecentlyUploadedFeed()),
     path('api/external_links', ExternalLinkView),
     path('api/ipfs_cids', IPFSView)

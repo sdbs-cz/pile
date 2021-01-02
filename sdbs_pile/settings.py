@@ -24,9 +24,23 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 if os.getenv("DEV"):
     DEBUG = True
     ALLOWED_HOSTS = []
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+
 else:
     DEBUG = False
     ALLOWED_HOSTS = ["pile.sdbs.cz"]
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': '/var/tmp/pile_cache',
+        }
+    }
 
 STATIC_PILE = bool(os.getenv("STATIC"))
 
