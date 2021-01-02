@@ -169,13 +169,17 @@ class BrandedImageView(View):
         margin = 32
         pile_image = Image.open(finders.find('pile_300dpi.png')).resize((256 - margin, 256 - margin))
         image = Image.open(document.image) if document.image else document.image_first_page
-        image.thumbnail((256, 256))
 
         result = Image.new('RGBA', (256, 256), (0, 0, 0, 0))
-        result.paste(image, ((256 - image.size[0]) // 2, (256 - image.size[1]) // 2))
+
+        if image:
+            image.thumbnail((256, 256))
+            result.paste(image, ((256 - image.size[0]) // 2, (256 - image.size[1]) // 2))
+
         result.paste(pile_image, (margin//2, margin//2), pile_image)
 
-        result = result.crop(result.getbbox())
+        if image:
+            result = result.crop(result.getbbox())
 
         img_byte_arr = io.BytesIO()
         result.save(img_byte_arr, format='PNG')
