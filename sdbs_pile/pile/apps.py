@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class PileConfig(AppConfig):
-    name = 'pile'
+    name = 'sdbs_pile.pile'
